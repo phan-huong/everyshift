@@ -1,0 +1,27 @@
+.signupFormContainer {
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 10%;
+}
+
+.signupFormContainer h4 {
+    padding-bottom: 1rem;
+}
+
+.signupFormContainer form div {
+    padding-bottom: 1rem;
+}
+
+.checkTerms {
+    padding-left: 1.25rem;
+}
+
+.formBtn {
+    background-color: #274B7D;
+    color: white;
+}
+
+.formBtn:hover {
+    background-color: #454545;
+    color: white;
+}

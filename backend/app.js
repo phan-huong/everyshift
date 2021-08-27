@@ -1,13 +1,30 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
-const placesRoutes = require('./routes/places-routes');
+const shiftsRoutes = require('./routes/shifts-routes');
+const usersRoutes = require('./routes/users-routes');
+const HttpError = require('./models/http-error');
+
+// PORT
+const port = process.env.PORT || 9000;
+
+// DB Config
+const db = require('./config/keys').mongoURI;
 
 const app = express();
 
 app.use(bodyParser.json());
 
-app.use('/api/places', placesRoutes);
+// Routes for places
+app.use('/shifts', shiftsRoutes);
+app.use('/users', usersRoutes);
+
+// Error Handling for unsupported routes
+app.use((req, res, next) => {
+    const error = new HttpError('Route not found!', 404);
+    throw error;
+});
 
 // Error Handling Middleware
 app.use((error, req, res, next) => {
@@ -18,4 +35,17 @@ app.use((error, req, res, next) => {
     res.json({message: error.message || 'An unknown error occurred!'});
 });
 
-app.listen(5000);
+// Connect Database
+mongoose
+    .connect(db, {
+        useNewUrlParser: true, 
+        useCreateIndex: true, 
+        useUnifiedTopology: true, 
+        useFindAndModify: false
+    })
+    .then(() => console.log('MongoDB Connected...'))
+    .catch(err => console.log(err));
+
+// Listening to port
+app.listen(port);
+console.log(`Listening On http://localhost:${port}`);

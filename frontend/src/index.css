@@ -1,10 +1,34 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam:wght@100&display=swap');
+/*
+App Name: EveryShift
+Author: Phan Huong
+Author URI: https://phanhuong.com/
+Description: CSS Styling for EveryShift
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+*/
+
+/*
+01. GLOBAL
+
+RESPONSIVE WITH BOOTSTRAP
+    Screen < 1200px
+    Screen < 992px
+    Screen < 768px
+    Screen <= 576px
+    Screen <= 480px
+    Screen <= 320px
+*/
+
+/* 01. GLOBAL */
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam:wght@500&display=swap');
 
 * {
   box-sizing: border-box;
+  font-family: 'Be Vietnam', sans-serif;
 }
 
-html {
+html, body, h6, h5, h4, h3, h2, h1 {
   font-family: 'Be Vietnam', sans-serif;
 }
 
@@ -15,25 +39,8 @@ body {
   background: white;
 }
 
-.slide-in-left-enter {
-  transform: translateX(-100%);
-}
-
-.slide-in-left-enter-active {
-  transform: translateX(0);
-  opacity: 1;
-  transition: all 200ms;
-}
-
-.slide-in-left-exit {
-  transform: translateX(0%);
-  opacity: 1;
-}
-
-.slide-in-left-exit-active {
-  transform: translateX(-100%);
-  opacity: 0;
-  transition: all 200ms;
+.background-dark {
+  background: #333333;
 }
 
 .center {
