@@ -1,12 +1,11 @@
 import React, {useState, useCallback, useContext} from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import NavHeader from './shared/components/Navigation/NavHeader';
 import NavFooter from './shared/components/Navigation/NavFooter';
 
 import Users from './users/pages/Users';
 import About from './places/pages/About';
-import NewPlace from './places/pages/NewPlace';
 import UserPlaces from './places/pages/UserPlaces';
 import SignIn from './users/pages/SignIn';
 import SignUp from './users/pages/SignUp';
@@ -33,9 +32,14 @@ const App = () => {
   return (
     <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}>
       <Router>
-        <Route path="/signin">
-          <SignIn />
-        </Route>
+        {/* {!auth.isLoggedIn && ( */}
+          <React.Fragment>
+            <Route path="/signin">
+              <SignIn />
+            </Route>
+            <Redirect to="/signin" />
+          </React.Fragment>
+        {/* )} */}
         {/* {auth.isLoggedIn && ( */}
           <React.Fragment>
             <NavHeader />
@@ -50,9 +54,6 @@ const App = () => {
                 {/* <Redirect to="/users" /> */}
                 <Route path="/:userId/places" exact>
                   <UserPlaces />
-                </Route>
-                <Route path="/places/new" exact>
-                  <NewPlace />
                 </Route>
                 <Route path="/signup">
                   <SignUp />

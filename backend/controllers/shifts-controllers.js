@@ -72,6 +72,7 @@ const createShift = async (req, res, next) => {
     }
 
     const { date, job, time, done, worker } = req.body;
+
     // const title = req.body.title;
     const newShift = new Shift({
         // id: uuidv4(),
@@ -95,8 +96,6 @@ const createShift = async (req, res, next) => {
         return next(error);
     }
 
-    console.log(user);
-
     try {
         const sess = await mongoose.startSession();
         sess.startTransaction();
@@ -105,6 +104,7 @@ const createShift = async (req, res, next) => {
         await user.save({ session: sess });
         await sess.commitTransaction();
     } catch (err) {
+        console.log(err);
         const error = new HttpError('Creating shift failed!', 500);
         return next(error);
     }
