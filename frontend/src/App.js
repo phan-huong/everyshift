@@ -25,22 +25,22 @@ const App = () => {
 
   const auth = useContext(AuthContext);
 
-  // if (!isLoggedIn) {
-  //   document.body.classList.add("background-dark")
-  // } else document.body.classList.remove("background-dark");
+  if (!isLoggedIn) {
+    document.body.classList.add("background-dark")
+  } else document.body.classList.remove("background-dark");
 
   return (
     <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}>
       <Router>
-        {/* {!auth.isLoggedIn && ( */}
+        {!auth.isLoggedIn && (
           <React.Fragment>
             <Route path="/signin">
               <SignIn />
             </Route>
             <Redirect to="/signin" />
           </React.Fragment>
-        {/* )} */}
-        {/* {auth.isLoggedIn && ( */}
+        )}
+        {auth.isLoggedIn && (
           <React.Fragment>
             <NavHeader />
             <main>
@@ -51,7 +51,6 @@ const App = () => {
                 <Route exact path="/about">
                   <About />
                 </Route>
-                {/* <Redirect to="/users" /> */}
                 <Route path="/:userId/places" exact>
                   <UserPlaces />
                 </Route>
@@ -65,7 +64,7 @@ const App = () => {
             </main>
             <NavFooter />
           </React.Fragment>
-        {/* )} */}
+        )}
       </Router>
     </AuthContext.Provider>
   );
