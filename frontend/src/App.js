@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useContext} from 'react';
+import React, {useState, useEffect, useCallback, useContext} from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import NavHeader from './shared/components/Navigation/NavHeader';
@@ -9,30 +9,38 @@ import About from './places/pages/About';
 import UserPlaces from './places/pages/UserPlaces';
 import SignIn from './users/pages/SignIn';
 import SignUp from './users/pages/SignUp';
-import { AuthContext } from './shared/context/auth-context';
+// import { AuthContext } from './shared/context/auth-context';
 import Calendar from './calendar/components/Calendar';
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('logged_in_token') ? true : false);
 
-  const login = useCallback(() => {
-    setIsLoggedIn(true);
-  }, []);
+  // const login = useCallback(() => {
+  //   setIsLoggedIn(true);
+  // }, []);
 
-  const logout = useCallback(() => {
-    setIsLoggedIn(false);
-  }, []);
+  // const logout = useCallback(() => {
+  //   setIsLoggedIn(false);
+  // }, []);
 
-  const auth = useContext(AuthContext);
+  // const auth = useContext(AuthContext);
+
+  useEffect(() => {
+    if (localStorage.getItem('logged_in_token')) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [])
 
   if (!isLoggedIn) {
     document.body.classList.add("background-dark")
   } else document.body.classList.remove("background-dark");
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}>
+    // <AuthContext.Provider value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}>
       <Router>
-        {!auth.isLoggedIn && (
+        {!isLoggedIn && (
           <React.Fragment>
             <Route path="/signin">
               <SignIn />
@@ -40,33 +48,35 @@ const App = () => {
             <Redirect to="/signin" />
           </React.Fragment>
         )}
-        {auth.isLoggedIn && (
+        {isLoggedIn && (
           <React.Fragment>
-            <NavHeader />
-            <main>
-              <Switch>
-                <Route exact path="/users">
-                  <Users />
-                </Route>
-                <Route exact path="/about">
-                  <About />
-                </Route>
-                <Route path="/:userId/places" exact>
-                  <UserPlaces />
-                </Route>
-                <Route path="/signup">
-                  <SignUp />
-                </Route>
-                <Route path="/calendar">
-                  <Calendar />
-                </Route>
-              </Switch>
-            </main>
-            <NavFooter />
+            <Route path="/">
+              <NavHeader />
+              <main>
+                <Switch>
+                  <Route exact path="/users">
+                    <Users />
+                  </Route>
+                  <Route exact path="/about">
+                    <About />
+                  </Route>
+                  <Route path="/:userId/places" exact>
+                    <UserPlaces />
+                  </Route>
+                  <Route path="/signup">
+                    <SignUp />
+                  </Route>
+                  <Route path="/calendar">
+                    <Calendar />
+                  </Route>
+                </Switch>
+              </main>
+              <NavFooter />
+            </Route>
           </React.Fragment>
         )}
       </Router>
-    </AuthContext.Provider>
+    // </AuthContext.Provider>
   );
 };
 
