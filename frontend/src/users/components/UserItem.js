@@ -8,15 +8,13 @@ const UserItem = props => {
     return (
         <li className="userItem">
             <Card className="userContent">
-                <Link to={`/${props.id}/places`}>
+                <Link to={`/users/${props.id}`}>
                     <div className="userImage">
                         <Avatar image={props.image} alt={props.name} />
                     </div>
                     <div className="userInfo">
                         <p className="userInfoName">{props.name}</p>
-                        <p className="userInfoPlace">
-                            {props.placeCount} {props.placeCount === 1 ? 'Place' : 'Places'}
-                        </p>
+                        <p className="userInfoPlace">{props.role}</p>
                     </div>
                 </Link>
             </Card>

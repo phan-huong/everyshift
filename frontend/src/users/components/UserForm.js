@@ -2,10 +2,16 @@ import React from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import "bootstrap/dist/css/bootstrap.css";
 
-import './SignUp.css';
+import './UserForm.css';
 
-const SignUp = () => {
+const UserForm = (props) => {
+    // Prepare data
+    const user_data = props.data;
+    const user_role = user_data.role ? user_data.role : null;
+    const first_name = user_data.name ? user_data.name : '';
+    
     // form validation rules 
     const validationSchema = Yup.object().shape({
         firstName: Yup.string()
@@ -59,29 +65,31 @@ const SignUp = () => {
     const { errors } = formState;
 
     const onSubmit = async (data) => {
+
         // display form data on success
         // alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4));
         // return false;
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
 
-        var raw = JSON.stringify(data);
+        // var myHeaders = new Headers();
+        // myHeaders.append("Content-Type", "application/json");
 
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow'
-        };
+        // var raw = JSON.stringify(data);
 
-        const created_user = await fetch("http://localhost:9000/users/signup", requestOptions)
-        .then(response => {
-            console.log(response);
-            if (response.status === 201) alert('Success!'); else alert('Failed!');
-            return response.json()
-        })
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
+        // var requestOptions = {
+        // method: 'POST',
+        // headers: myHeaders,
+        // body: raw,
+        // redirect: 'follow'
+        // };
+
+        // const created_user = await fetch("http://localhost:9000/users/signup", requestOptions)
+        // .then(response => {
+        //     console.log(response);
+        //     if (response.status === 201) alert('Success!'); else alert('Failed!');
+        //     return response.json()
+        // })
+        // .then(result => console.log(result))
+        // .catch(error => console.log('error', error));
     }
 
     return (
@@ -90,10 +98,10 @@ const SignUp = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label>Position</label>
-                    <select name="role" {...register('role')} className={`form-control ${errors.role ? 'is-invalid' : ''}`}>
-                        <option value=""></option>
-                        <option value="manager">Manager</option>
-                        <option value="employee">Employee</option>
+                    <select name="role" {...register('role')} className={`form-control ${errors.role ? 'is-invalid' : ``}`} disabled={user_role != 'manager' ? true : false}>
+                        <option value="">Please choose role</option>
+                        <option value="employee" selected={ user_role == 'employee' ? true : false }>Employee</option>
+                        <option value="manager" selected={ user_role == 'manager' ? true : false }>Manager</option>
                     </select>
                     <div className="invalid-feedback">{errors.role?.message}</div>
                 </div>
@@ -184,11 +192,15 @@ const SignUp = () => {
                     <input name="confirmPassword" type="password" {...register('confirmPassword')} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} />
                     <div className="invalid-feedback">{errors.confirmPassword?.message}</div>
                 </div>
-                <div className="checkTerms">
-                    <input name="acceptTerms" type="checkbox" {...register('acceptTerms')} id="acceptTerms" className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`} />
-                    <label htmlFor="acceptTerms" className="form-check-label">Accept Terms & Conditions</label>
-                    <div className="invalid-feedback">{errors.acceptTerms?.message}</div>
-                </div>
+                {
+                    props.type == 'sign_up' ? 
+                        <div className="checkTerms">
+                            <input name="acceptTerms" type="checkbox" {...register('acceptTerms')} id="acceptTerms" className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`} />
+                            <label htmlFor="acceptTerms" className="form-check-label">Accept Terms & Conditions</label>
+                            <div className="invalid-feedback">{errors.acceptTerms?.message}</div>
+                        </div> :
+                        <></>
+                }
                 <div>
                     <button type="submit" className="btn mr-1 formBtn">Register</button>
                     <button type="button" onClick={() => reset()} className="btn btn-secondary">Reset</button>
@@ -198,4 +210,4 @@ const SignUp = () => {
     )
 };
 
-export default SignUp;
+export default UserForm;

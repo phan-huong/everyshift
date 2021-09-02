@@ -6,11 +6,11 @@ import NavFooter from './shared/components/Navigation/NavFooter';
 
 import Users from './users/pages/Users';
 import About from './places/pages/About';
-import UserPlaces from './places/pages/UserPlaces';
 import SignIn from './users/pages/SignIn';
 import SignUp from './users/pages/SignUp';
 // import { AuthContext } from './shared/context/auth-context';
 import Calendar from './calendar/components/Calendar';
+import UserProfile from './users/pages/UserProfile';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('logged_in_token') ? true : false);
@@ -60,8 +60,8 @@ const App = () => {
                   <Route exact path="/about">
                     <About />
                   </Route>
-                  <Route path="/:userId/places" exact>
-                    <UserPlaces />
+                  <Route path="/users/:id" exact>
+                    <UserProfile />
                   </Route>
                   <Route path="/signup">
                     <SignUp />

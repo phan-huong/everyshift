@@ -15,7 +15,8 @@ const DUMMY_USERS = [
     }
 ];
 
-const getUsers = async (req, res, next) => {
+// Get all users
+const getAllUsers = async (req, res, next) => {
     let users;
     try {
         users = await User.find({}, '-password');
@@ -26,6 +27,28 @@ const getUsers = async (req, res, next) => {
     res.json({users: users.map(user => user.toObject({ getters: true }))});
 };
 
+// Get user by ID
+const getUserByID = async (req, res, next) => {
+    let user_id = req.params.id;
+
+    let user;
+    try {
+        user = await User.findById(user_id);
+    } catch (err) {
+        console.log(err);
+        const error = new HttpError('Fetching user failed!', 500);
+        return next(error);
+    }
+
+    if (!user) {
+        console.log('No user found!');
+        throw new HttpError('User not found!', 404);
+    }
+
+    res.json({user_data: user.toObject({ getters: true })});
+};
+
+// Create a user
 const signup = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -34,7 +57,7 @@ const signup = async (req, res, next) => {
         );
     }
 
-    const { name, email, password } = req.body;
+    const { firstName, lastName, email, password, role, dateOfBirth, gender, phone, streetHouseNr, postalCode, city, state, country, salary, entryDate} = req.body;
 
     let existingUser
     try {
@@ -58,8 +81,16 @@ const signup = async (req, res, next) => {
     }
 
     const createdUser = new User({
-        name,
+        firstName, 
+        lastName, 
         email,
+        role, 
+        dateOfBirth, 
+        gender, 
+        phone, 
+        streetHouseNr, postalCode, city, state, country, 
+        salary, 
+        entryDate,
         image: 'https://image.flaticon.com/icons/png/512/860/860784.png',
         password: hashedPassword,
         shifts: []
@@ -89,6 +120,7 @@ const signup = async (req, res, next) => {
         .json({ userId: createdUser.id, email: createdUser.email, token: token });
 };
 
+// User login
 const login = async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -139,6 +171,7 @@ const login = async (req, res, next) => {
     });
 };
 
-exports.getUsers = getUsers;
+exports.getAllUsers = getAllUsers;
+exports.getUserByID = getUserByID;
 exports.signup = signup;
 exports.login = login;

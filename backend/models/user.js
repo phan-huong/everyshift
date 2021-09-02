@@ -4,9 +4,14 @@ const uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    name: { 
-        type: String, 
-        required: true 
+
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
     },
     email: { 
         type: String, 
@@ -18,9 +23,58 @@ const userSchema = new Schema({
         required: true, 
         minlength: 6 
     },
+    role: {
+        type: String,
+        required: true
+    },
+    dateOfBirth: {
+        type: Date,
+        required: true
+    },
+    gender: {
+        type: String,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: false
+    },
+    streetHouseNr: {
+        type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    state: {
+        type: String,
+        required: true
+    },
+    postalCode: {
+        type: Number,
+        required: true
+    },
+    state: {
+        type: String,
+        required: true
+    },
+    country: {
+        type: String,
+        required: true
+    },
+    salary: {
+        type: Number,
+        required: true
+    },
     image: { 
         type: String, 
-        required: true 
+        required: false,
+        default: "http://localhost:3000/public/icons/user.png"
+    },
+    entryDate: {
+        type: Date,
+        required: true
     },
     shifts: 
     [{ 
