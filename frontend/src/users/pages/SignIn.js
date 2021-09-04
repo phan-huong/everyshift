@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect, Router } from 'react-router-dom';
+import { Redirect, useHistory, Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
+import "bootstrap/dist/css/bootstrap.css";
 import './SignIn.css';
-import { Link } from 'react-router-dom';
 
 const SignIn = () => {
+    let history = useHistory();
+    let has_token = localStorage.getItem('logged_in_token') ? true : false;
+
     const validationSchema = Yup.object().shape({
         email: Yup.string()
             .required('Username is required'),
@@ -16,17 +19,12 @@ const SignIn = () => {
             .required('Password is required')
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
-    const [loginState, setLoginState] = useState(false);
 
     // useForm() hook
     const { register, handleSubmit, formState } = useForm(formOptions);
     const { errors } = formState;
 
     const onSubmit = async (data) => {
-        // display form data on success
-        // console.log(data);
-        // alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4));
-
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         
@@ -48,7 +46,7 @@ const SignIn = () => {
             .then(result => {
                 if (result.hasOwnProperty("token")) {
                     localStorage.setItem('logged_in_token', result.token);
-                    setLoginState(true)
+                    history.push("/");
                 } else {
                     localStorage.removeItem('logged_in_token');
                 }
@@ -63,48 +61,37 @@ const SignIn = () => {
         // return false;
     }
 
-    // useEffect(() => {
-    //     if (localStorage.getItem('logged_in_token')) {
-    //         setLoginState(true);
-    //     } else {
-    //         setLoginState(false);
-    //     }
-    // }, [])
+    if (has_token) return <Redirect to="/" />
 
     return (
-        <div className="signinFormContainer">
-            {loginState && (
-                <Router>
-                    <Redirect from="/signin" to="/" />
-                </Router>
-            )}
-            
-            <h4>Please sign in</h4>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <div>
-                    <label>Username</label>
-                    <input name="email" type="text" {...register('email')} className={`form-control ${errors.email ? 'is-invalid' : ''}`} />
-                    <div className="invalid-feedback">{errors.email?.message}</div>
+        <div className="bg-dark size_full_screen">
+            <div className="signinFormContainer">
+                <h4>Please sign in</h4>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div>
+                        <label>Username</label>
+                        <input name="email" type="text" {...register('email')} className={`form-control ${errors.email ? 'is-invalid' : ''}`} />
+                        <div className="invalid-feedback">{errors.email?.message}</div>
+                    </div>
+                    <div>
+                        <label>Password</label>
+                        <input name="password" type="password" {...register('password')} className={`form-control ${errors.password ? 'is-invalid' : ''}`} />
+                        <div className="invalid-feedback">{errors.password?.message}</div>
+                    </div>
+                    <div className="goBtn">
+                        <button type="submit" className="btn">Go!</button>
+                    </div>
+                </form>
+                <div className="signInLink">
+                    <p><Link to="/">Forgot your username?</Link></p>
+                    <p><Link to="/">Forgot your password?</Link></p>
                 </div>
-                <div>
-                    <label>Password</label>
-                    <input name="password" type="password" {...register('password')} className={`form-control ${errors.password ? 'is-invalid' : ''}`} />
-                    <div className="invalid-feedback">{errors.password?.message}</div>
+                <div className="signinLogo">
+                    <p>EveryShift</p>
                 </div>
-                <div className="goBtn">
-                    <button type="submit" className="btn">Go!</button>
-                </div>
-            </form>
-            <div className="signInLink">
-                <p><Link to="/">Forgot your username?</Link></p>
-                <p><Link to="/">Forgot your password?</Link></p>
-            </div>
-            <div class="signinLogo">
-                <p>EveryShift</p>
             </div>
         </div>
     )
-
 };
 
 export default SignIn;

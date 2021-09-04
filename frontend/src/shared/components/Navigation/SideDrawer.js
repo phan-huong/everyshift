@@ -1,15 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import './SideDrawer.css';
 
 const SideDrawer = props => {
+    let history = useHistory();
+
     const closeDrawer = () => {
         document.getElementById("sideDrawer").setAttribute("class", "");
     }
 
     const user_logout = () => {
         localStorage.removeItem('logged_in_token');
+        history.push("/signin")
     }
     return <aside>
         <nav id="sideDrawer">
