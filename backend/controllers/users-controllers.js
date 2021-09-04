@@ -6,15 +6,6 @@ const jwt = require('jsonwebtoken');
 const HttpError = require('../models/http-error');
 const User = require('../models/user');
 
-const DUMMY_USERS = [
-    {
-    id: 'u1',
-    name: 'Chicki Boom Boom',
-    email: 'eggsi@gmail.com',
-    password: 'iceicebaby'
-    }
-];
-
 // Get all users
 const getAllUsers = async (req, res, next) => {
     let users;
@@ -46,6 +37,51 @@ const getUserByID = async (req, res, next) => {
     }
 
     res.json({user_data: user.toObject({ getters: true })});
+};
+
+// Update user by ID
+const updateUser = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return next(
+            new HttpError('Invalid inputs, please check again!', 422)
+        );
+    }
+    const user_id = req.params.id;
+    const { firstName, lastName, email, password, role, dateOfBirth, gender, phone, streetHouseNr, city, postalCode, state, country, salary, entryDate } = req.body;
+
+    let edited_user;
+    try {
+        edited_user = await User.findById(user_id);
+    } catch (err) {
+        const error = new HttpError('Could not update user!', 500);
+      return next(error);
+    }
+
+    edited_user.firstName = firstName;
+    edited_user.lastName = lastName;
+    edited_user.email = email;
+    edited_user.password = password;
+    edited_user.role = role;
+    edited_user.dateOfBirth = dateOfBirth;
+    edited_user.gender = gender;
+    edited_user.phone = phone;
+    edited_user.streetHouseNr = streetHouseNr;
+    edited_user.city = city;
+    edited_user.postalCode = postalCode;
+    edited_user.state = state;
+    edited_user.country = country;
+    edited_user.salary = salary;
+    edited_user.entryDate = entryDate;
+
+    try {
+        await edited_user.save();
+    } catch (err) {
+        const error = new HttpError('Could not update user!', 500);
+        return next(error);
+    }
+
+    res.status(200).json({ edited_user: edited_user.toObject({ getters: true }) });
 };
 
 // Create a user
@@ -173,5 +209,6 @@ const login = async (req, res, next) => {
 
 exports.getAllUsers = getAllUsers;
 exports.getUserByID = getUserByID;
+exports.updateUser = updateUser;
 exports.signup = signup;
 exports.login = login;

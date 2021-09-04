@@ -2,13 +2,31 @@ const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
 
+const checkAuth = require('../middleware/check-auth');
+
 const usersController = require('../controllers/users-controllers');
+
+// User login
+router.post('/login', usersController.login);
+
+router.use(checkAuth);
 
 // Get all users
 router.get('/', usersController.getAllUsers);
 
 // Get user by ID
 router.get('/:id', usersController.getUserByID);
+
+// Update user by ID
+router.patch(
+  '/:id', 
+  [
+    check('email')
+      .normalizeEmail() // Test@test.com => test@test.com
+      .isEmail(),
+    check('password').isLength({ min: 6 }),
+  ],
+  usersController.updateUser);
 
 // Create a user
 router.post(
@@ -34,8 +52,5 @@ router.post(
   ],
   usersController.signup
 );
-
-// User login
-router.post('/login', usersController.login);
 
 module.exports = router;
