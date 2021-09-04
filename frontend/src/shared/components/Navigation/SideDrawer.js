@@ -12,7 +12,7 @@ const SideDrawer = props => {
 
     const user_logout = () => {
         localStorage.removeItem('logged_in_token');
-        history.push("/signin")
+        history.push('/signin');
     }
     return <aside>
         <nav id="sideDrawer">

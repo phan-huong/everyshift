@@ -9,7 +9,7 @@ import './UserForm.css';
 const UserForm = (props) => {
     // Prepare data
     const user_data = props.data;
-    const user_role = user_data.role ? user_data.role : null;
+    const user_role = user_data.role ? user_data.role : '';
     const first_name = user_data.name ? user_data.name : '';
     
     // form validation rules 
@@ -65,7 +65,6 @@ const UserForm = (props) => {
     const { errors } = formState;
 
     const onSubmit = async (data) => {
-
         // display form data on success
         // alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4));
         // return false;
@@ -98,16 +97,22 @@ const UserForm = (props) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label>Position</label>
-                    <select name="role" {...register('role')} className={`form-control ${errors.role ? 'is-invalid' : ``}`} disabled={user_role != 'manager' ? true : false}>
+                    <select 
+                        name="role" 
+                        {...register('role')} 
+                        className={`form-control ${errors.role ? 'is-invalid' : ``}`} 
+                        disabled={user_role !== 'manager' ? true : false}
+                        value={user_role}
+                    >
                         <option value="">Please choose role</option>
-                        <option value="employee" selected={ user_role == 'employee' ? true : false }>Employee</option>
-                        <option value="manager" selected={ user_role == 'manager' ? true : false }>Manager</option>
+                        <option value="employee">Employee</option>
+                        <option value="manager">Manager</option>
                     </select>
                     <div className="invalid-feedback">{errors.role?.message}</div>
                 </div>
                 <div>
                     <label>First Name</label>
-                    <input name="firstName" type="text" {...register('firstName')} className={`form-control ${errors.firstName ? 'is-invalid' : ''}`} />
+                    <input name="firstName" type="text" {...register('firstName')} className={`form-control ${errors.firstName ? 'is-invalid' : ''}`} value={first_name} />
                     <div className="invalid-feedback">{errors.firstName?.message}</div>
                 </div>
                 <div>
@@ -193,7 +198,7 @@ const UserForm = (props) => {
                     <div className="invalid-feedback">{errors.confirmPassword?.message}</div>
                 </div>
                 {
-                    props.type == 'sign_up' ? 
+                    props.type === 'sign_up' ? 
                         <div className="checkTerms">
                             <input name="acceptTerms" type="checkbox" {...register('acceptTerms')} id="acceptTerms" className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`} />
                             <label htmlFor="acceptTerms" className="form-check-label">Accept Terms & Conditions</label>

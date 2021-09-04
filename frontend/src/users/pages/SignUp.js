@@ -74,7 +74,7 @@ const SignUp = () => {
             redirect: 'follow'
         };
 
-        const created_user = await fetch("http://localhost:9000/users/signup", requestOptions)
+        await fetch("http://localhost:9000/users/signup", requestOptions)
         .then(response => {
             console.log(response);
             if (response.status === 201) alert('Success!'); else alert('Failed!');

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Redirect, useHistory, Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
-import "bootstrap/dist/css/bootstrap.css";
 import './SignIn.css';
 
 const SignIn = () => {
@@ -37,28 +36,25 @@ const SignIn = () => {
             redirect: 'follow'
         };
         
-        const fetched_user = await fetch("http://localhost:9000/users/login", requestOptions)
-            .then(response => {
-                console.log(response);
-                if (response.status === 200) console.log('Success!'); else console.log('Failed!');
-                return response.json()
-            })
-            .then(result => {
-                if (result.hasOwnProperty("token")) {
-                    localStorage.setItem('logged_in_token', result.token);
-                    history.push("/");
-                } else {
-                    localStorage.removeItem('logged_in_token');
-                }
+        await fetch("http://localhost:9000/users/login", requestOptions)
+        .then(response => {
+            console.log(response);
+            if (response.status === 200) console.log('Success!'); else console.log('Failed!');
+            return response.json()
+        })
+        .then(result => {
+            if (result.hasOwnProperty("token")) {
+                localStorage.setItem('logged_in_token', result.token);
+                history.push("/");
+            } else {
+                localStorage.removeItem('logged_in_token');
+            }
 
-                console.log(result);
-            })
-            .catch(error => {
-                console.log('error', error)
-            });
-        
-
-        // return false;
+            console.log(result);
+        })
+        .catch(error => {
+            console.log('error', error)
+        });
     }
 
     if (has_token) return <Redirect to="/" />

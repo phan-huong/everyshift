@@ -4,7 +4,7 @@ import UserItem from './UserItem';
 import Card from '../../shared/components/UIElements/Card';
 
 const UsersList = props => {
-    console.log(props.items);
+    // console.log(props.items);
     if (props.items.length === 0)
         return (
             <Card>
