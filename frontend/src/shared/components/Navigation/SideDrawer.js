@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import './SideDrawer.css';
 
 const SideDrawer = () => {
     let history = useHistory();
-    let location = useLocation();
     const sideDrawerOpenClass = "drawerOpen";
     const [userID, setUserID] = useState();
     const [userRole, setUserRole] = useState("employee");
@@ -18,11 +17,6 @@ const SideDrawer = () => {
         localStorage.removeItem('logged_in_token');
         localStorage.removeItem('userData');
         history.push('/signin');
-    }
-
-    const reload_page = (page_to_load) => {
-        console.log("page to load = " + page_to_load);
-        console.log("current page = " + location.pathname);
     }
 
     useEffect(() => {
@@ -42,7 +36,7 @@ const SideDrawer = () => {
 
     return <aside>
         <nav id="sideDrawer">
-            <Link to={`/users/${userID}`} onClick={() => { closeDrawer(); reload_page(`/users/${userID}`); window.location.href=`/users/${userID}`; }}>User Profile</Link>
+            <Link to={`/users/${userID}`} onClick={() => { closeDrawer(); window.location.href=`/users/${userID}`; }}>User Profile</Link>
             { userRole === "manager" ? <Link to="/users" onClick={closeDrawer}>Manage employees</Link> : <></> }
             <Link to="/" onClick={closeDrawer}>Settings</Link>
             <Link to="/about" onClick={closeDrawer}>About</Link>
