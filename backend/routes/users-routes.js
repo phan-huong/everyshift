@@ -18,19 +18,18 @@ router.get('/', usersController.getAllUsers);
 router.get('/:id', usersController.getUserByID);
 
 // Update user by ID
-router.patch(
-  '/:id', 
+router.patch('/:id', 
   [
     check('email')
       .normalizeEmail() // Test@test.com => test@test.com
       .isEmail()
     // check('password').isLength({ min: 6 }),
   ],
-  usersController.updateUser);
+  usersController.updateUser
+);
 
 // Create a user
-router.post(
-  '/signup',
+router.post('/signup',
   [
     check('firstName').not().isEmpty(),
     check('lastName').not().isEmpty(),

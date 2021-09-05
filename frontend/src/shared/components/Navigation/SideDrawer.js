@@ -37,7 +37,8 @@ const SideDrawer = () => {
     return <aside>
         <nav id="sideDrawer">
             <Link to={`/users/${userID}`} onClick={() => { closeDrawer(); window.location.href=`/users/${userID}`; }}>User Profile</Link>
-            { userRole === "manager" ? <Link to="/users" onClick={closeDrawer}>Manage employees</Link> : <></> }
+            {/* { userRole === "manager" ? <Link to="/users" onClick={closeDrawer}>Manage employees</Link> : <></> } */}
+            <Link to="/users" onClick={closeDrawer}>Manage employees</Link>
             <Link to="/" onClick={closeDrawer}>Settings</Link>
             <Link to="/about" onClick={closeDrawer}>About</Link>
             <Link to="/signin" onClick={() => { closeDrawer(); user_logout(); }}>Sign out</Link>

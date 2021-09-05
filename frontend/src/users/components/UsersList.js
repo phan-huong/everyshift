@@ -13,15 +13,19 @@ const UsersList = props => {
         );
     
     return <ul className="usersList">
-        {props.items.map(user => (
-            <UserItem 
-                key={user.id}
-                id={user.id} 
-                image={user.image} 
-                name={user.name || `${user.firstName} ${user.lastName}`} 
-                role={user.role}
-            />
-        ))}
+        {props.items.map(user => {
+            let current_user_id = JSON.parse(localStorage.getItem("userData"))._id;
+            if (current_user_id !== user._id)
+                return (
+                    <UserItem 
+                        key={user._id}
+                        id={user._id} 
+                        image={user.image} 
+                        name={user.name || `${user.firstName} ${user.lastName}`} 
+                        role={user.role}
+                    />
+                )
+        })}
     </ul>
 };
 

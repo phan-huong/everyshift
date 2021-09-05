@@ -49,7 +49,9 @@ const updateUser = async (req, res, next) => {
     }
     const user_id = req.params.id;
     const { firstName, lastName, email, password, role, dateOfBirth, gender, phone, streetHouseNr, city, postalCode, state, country, salary, entryDate } = req.body;
+    console.log(req.body);
 
+    // Find user by ID
     let edited_user;
     try {
         edited_user = await User.findById(user_id);
@@ -58,11 +60,39 @@ const updateUser = async (req, res, next) => {
       return next(error);
     }
 
+    // Check if email is unique
+    if (email && email !== '' && email !== edited_user.email) {
+        let existingUserByEmail;
+        try {
+            existingUserByEmail = await User.findOne({ email: email })
+        } catch (err) {
+            const error = new HttpError('Could not find email!', 500);
+            return next(error);
+        }
+        
+        if (existingUserByEmail) {
+            const error = new HttpError('Email already exists!', 422);
+            return next(error);
+        }
+        
+        edited_user.email = email;
+    }
+
+    // Convert to hashed password
+    if (password && password !== '') {
+        let hashedPassword;
+        try {
+            hashedPassword = await bcrypt.hash(password, 12);
+        } catch (err) {
+            const error = new HttpError('Could not update password!', 500);
+            return next(error);
+        }
+        edited_user.password = hashedPassword;
+    }
+
     edited_user.firstName = firstName;
     edited_user.lastName = lastName;
-    edited_user.email = email;
-    edited_user.password = password && password !== '' ? password : edited_user.password;
-    edited_user.role = role;
+    edited_user.role = role ? role : edited_user.role;
     edited_user.dateOfBirth = dateOfBirth;
     edited_user.gender = gender;
     edited_user.phone = phone;
@@ -170,7 +200,7 @@ const login = async (req, res, next) => {
     }
   
     if (!existingUser) {
-        const error = new HttpError('Invalid credentials, login failed!', 401);
+        const error = new HttpError('Username/Email not found, login failed!', 401);
         return next(error);
     }
     
@@ -178,12 +208,12 @@ const login = async (req, res, next) => {
     try {
         isValidPassword = await bcrypt.compare(password, existingUser.password);
     } catch (err) {
-        const error = new HttpError('Invalid credentials, login failed!', 500);
+        const error = new HttpError('Cannot verify password, login failed!', 500);
         return next(error);
     }
     
     if (!isValidPassword) {
-        const error = new HttpError('Invalid credentials, login failed!', 403);
+        const error = new HttpError('Password is wrong, login failed!', 403);
         return next(error);
     }
 
