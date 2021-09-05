@@ -3,14 +3,29 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import "bootstrap/dist/css/bootstrap.css";
+import { to_raw_date } from '../../shared/functions/FormatDate';
+import { isEmptyObject } from '../../shared/functions/General';
 
 import './UserForm.css';
 
 const UserForm = (props) => {
     // Prepare data
+    const current_user_role = JSON.parse(localStorage.getItem("userData")).role;
     const user_data = props.data;
     const user_role = user_data.role ? user_data.role : '';
-    const first_name = user_data.name ? user_data.name : '';
+    const first_name = user_data.firstName ? user_data.firstName : '';
+    const last_name = user_data.lastName ? user_data.lastName : '';
+    const email = user_data.email ? user_data.email : '';
+    const dateOfBirth = to_raw_date(user_data.dateOfBirth);
+    const gender = user_data.gender ? user_data.gender : '';
+    const streetHouseNr = user_data.streetHouseNr ? user_data.streetHouseNr : '';
+    const city = user_data.city ? user_data.city : '';
+    const postalCode = user_data.postalCode ? user_data.postalCode : '';
+    const state = user_data.state ? user_data.state : '';
+    const phone = user_data.phone ? user_data.phone : '';
+    const country = user_data.country ? user_data.country : '';
+    const salary = user_data.salary ? user_data.salary : '';
+    const entryDate = to_raw_date(user_data.entryDate);
     
     // form validation rules 
     const validationSchema = Yup.object().shape({
@@ -54,9 +69,9 @@ const UserForm = (props) => {
             .required('Password is required'),        
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
-            .required('Confirm Password is required'),
-        acceptTerms: Yup.bool()
-            .oneOf([true], 'Accept Ts & Cs is required')
+            .required('Confirm Password is required')
+        // acceptTerms: Yup.bool()
+        //     .oneOf([true], 'Accept Ts & Cs is required')
     });
     const formOptions = { resolver: yupResolver(validationSchema) };
 
@@ -64,36 +79,48 @@ const UserForm = (props) => {
     const { register, handleSubmit, reset, formState } = useForm(formOptions);
     const { errors } = formState;
 
-    const onSubmit = async (data) => {
-        // display form data on success
-        // alert('SUCCESS!! :-)\n\n' + JSON.stringify(data, null, 4));
-        // return false;
+    const update_user_by_id = async (data) => {
+        let token = localStorage.getItem("logged_in_token");
+        if (!isEmptyObject(user_data) && token) {
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", `Bearer ${token}`);
+            myHeaders.append("Content-Type", "application/json");
+            
+            var raw = JSON.stringify(data);
+            
+            var requestOptions = {
+                method: 'PATCH',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+            
+            var status_code;
+            await fetch(`http://localhost:9000/users/${user_data._id}`, requestOptions)
+            .then(response =>  {
+                status_code = response.status;
+                return response.json()
+            })
+            .then(result => {
+                if (status_code === 200) {
+                    console.log(result);
+                    alert('Updated successfully!');
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+                alert('Updated failed!');
+            });
+        }
+    }
 
-        // var myHeaders = new Headers();
-        // myHeaders.append("Content-Type", "application/json");
-
-        // var raw = JSON.stringify(data);
-
-        // var requestOptions = {
-        // method: 'POST',
-        // headers: myHeaders,
-        // body: raw,
-        // redirect: 'follow'
-        // };
-
-        // const created_user = await fetch("http://localhost:9000/users/signup", requestOptions)
-        // .then(response => {
-        //     console.log(response);
-        //     if (response.status === 201) alert('Success!'); else alert('Failed!');
-        //     return response.json()
-        // })
-        // .then(result => console.log(result))
-        // .catch(error => console.log('error', error));
+    const onSubmit = (data) => {
+        update_user_by_id(data);
     }
 
     return (
         <div className="signupFormContainer">
-            <h4>Create a new account</h4>
+            { isEmptyObject(user_data) ? <h4>Create a new account</h4> : <></> }
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
                     <label>Position</label>
@@ -101,7 +128,7 @@ const UserForm = (props) => {
                         name="role" 
                         {...register('role')} 
                         className={`form-control ${errors.role ? 'is-invalid' : ``}`} 
-                        disabled={user_role !== 'manager' ? true : false}
+                        disabled={current_user_role !== 'manager' ? true : false}
                         value={user_role}
                     >
                         <option value="">Please choose role</option>
@@ -117,23 +144,23 @@ const UserForm = (props) => {
                 </div>
                 <div>
                     <label>Last Name</label>
-                    <input name="lastName" type="text" {...register('lastName')} className={`form-control ${errors.lastName ? 'is-invalid' : ''}`} />
+                    <input name="lastName" type="text" {...register('lastName')} className={`form-control ${errors.lastName ? 'is-invalid' : ''}`} value={last_name} />
                     <div className="invalid-feedback">{errors.lastName?.message}</div>
                 </div>
                 <div>
                     <label>Email</label>
-                    <input name="email" type="text" placeholder="example@email.com" {...register('email')} className={`form-control ${errors.email ? 'is-invalid' : ''}`} />
+                    <input name="email" type="text" placeholder="example@email.com" {...register('email')} className={`form-control ${errors.email ? 'is-invalid' : ''}`} value={email} />
                     <div className="invalid-feedback">{errors.email?.message}</div>
                 </div>
                 <div className="field_2col">
                     <div>
                         <label>Date of Birth</label>
-                        <input name="dateOfBirth" type="date" {...register('dateOfBirth')} className={`form-control ${errors.dateOfBirth ? 'is-invalid' : ''}`} />
+                        <input name="dateOfBirth" type="date" {...register('dateOfBirth')} className={`form-control ${errors.dateOfBirth ? 'is-invalid' : ''}`} value={dateOfBirth} />
                         <div className="invalid-feedback">{errors.dateOfBirth?.message}</div>
                     </div>
                     <div>
                         <label>Gender</label>
-                        <select name="gender" {...register('gender')} className={`form-control ${errors.gender ? 'is-invalid' : ''}`}>
+                        <select name="gender" {...register('gender')} className={`form-control ${errors.gender ? 'is-invalid' : ''}`} value={gender}>
                             <option value=""></option>
                             <option value="female">Female</option>
                             <option value="male">Male</option>
@@ -144,46 +171,46 @@ const UserForm = (props) => {
                 </div>
                 <div>
                     <label>Phone</label>
-                    <input name="phone" type="tel" placeholder="+49 12345678910" pattern="+[0-9]{2} [0-9]{11}" {...register('phone')} className={`form-control ${errors.phone ? 'is-invalid' : ''}`} />
+                    <input name="phone" type="tel" placeholder="+49 12345678910" pattern="+[0-9]{2} [0-9]{11}" {...register('phone')} className={`form-control ${errors.phone ? 'is-invalid' : ''}`}  value={phone}/>
                     <div className="invalid-feedback">{errors.phone?.message}</div>
                 </div>
                 <p>Adress</p>
                 <div>
                     <label>Street, House number</label>
-                    <input name="streetHouseNr" type="text" {...register('streetHouseNr')} className={`form-control ${errors.streetHouseNr ? 'is-invalid' : ''}`} />
+                    <input name="streetHouseNr" type="text" {...register('streetHouseNr')} className={`form-control ${errors.streetHouseNr ? 'is-invalid' : ''}`} value={streetHouseNr} />
                     <div className="invalid-feedback">{errors.streetHouseNr?.message}</div>
                 </div>
                 <div className="field_2col">
                     <div>
                         <label>City</label>
-                        <input name="city" type="text" {...register('city')} className={`form-control ${errors.city ? 'is-invalid' : ''}`} />
+                        <input name="city" type="text" {...register('city')} className={`form-control ${errors.city ? 'is-invalid' : ''}`} value={city} />
                         <div className="invalid-feedback">{errors.city?.message}</div>
                     </div>
                     <div>
                         <label>Postal Code</label>
-                        <input name="postalCode" type="text" {...register('postalCode')} className={`form-control ${errors.postalCode ? 'is-invalid' : ''}`} />
+                        <input name="postalCode" type="text" {...register('postalCode')} className={`form-control ${errors.postalCode ? 'is-invalid' : ''}`} value={postalCode} />
                         <div className="invalid-feedback">{errors.postalCode?.message}</div>
                     </div>
                     <div>
                         <label>State</label>
-                        <input name="state" type="text" {...register('state')} className={`form-control ${errors.state ? 'is-invalid' : ''}`} />
+                        <input name="state" type="text" {...register('state')} className={`form-control ${errors.state ? 'is-invalid' : ''}`} value={state} />
                         <div className="invalid-feedback">{errors.state?.message}</div>
                     </div>
                     <div>
                         <label>Country</label>
-                        <input name="country" type="text" {...register('country')} className={`form-control ${errors.country ? 'is-invalid' : ''}`} />
+                        <input name="country" type="text" {...register('country')} className={`form-control ${errors.country ? 'is-invalid' : ''}`} value={country} />
                         <div className="invalid-feedback">{errors.country?.message}</div>
                     </div>
                 </div>
                 <div className="field_2col">
                     <div>
                         <label>Salary</label>
-                        <input name="salary" type="number" min="1" {...register('salary')} className={`form-control ${errors.salary ? 'is-invalid' : ''}`} />
+                        <input name="salary" type="number" min="1" {...register('salary')} className={`form-control ${errors.salary ? 'is-invalid' : ''}`} value={salary} />
                         <div className="invalid-feedback">{errors.salary?.message}</div>
                     </div>
                     <div>
                         <label>Entry date</label>
-                        <input name="entryDate" type="date" {...register('entryDate')} className={`form-control ${errors.entryDate ? 'is-invalid' : ''}`} />
+                        <input name="entryDate" type="date" {...register('entryDate')} className={`form-control ${errors.entryDate ? 'is-invalid' : ''}`} value={entryDate} />
                         <div className="invalid-feedback">{errors.entryDate?.message}</div>
                     </div>
                 </div>
@@ -197,7 +224,7 @@ const UserForm = (props) => {
                     <input name="confirmPassword" type="password" {...register('confirmPassword')} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} />
                     <div className="invalid-feedback">{errors.confirmPassword?.message}</div>
                 </div>
-                {
+                {/* {
                     props.type === 'sign_up' ? 
                         <div className="checkTerms">
                             <input name="acceptTerms" type="checkbox" {...register('acceptTerms')} id="acceptTerms" className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''}`} />
@@ -205,9 +232,9 @@ const UserForm = (props) => {
                             <div className="invalid-feedback">{errors.acceptTerms?.message}</div>
                         </div> :
                         <></>
-                }
+                } */}
                 <div>
-                    <button type="submit" className="btn mr-1 formBtn">Register</button>
+                    <button type="submit" className="btn mr-1 formBtn">Apply</button>
                     <button type="button" onClick={() => reset()} className="btn btn-secondary">Reset</button>
                 </div>
             </form>

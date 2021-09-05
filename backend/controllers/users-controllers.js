@@ -61,7 +61,7 @@ const updateUser = async (req, res, next) => {
     edited_user.firstName = firstName;
     edited_user.lastName = lastName;
     edited_user.email = email;
-    edited_user.password = password;
+    edited_user.password = password && password !== '' ? password : edited_user.password;
     edited_user.role = role;
     edited_user.dateOfBirth = dateOfBirth;
     edited_user.gender = gender;
@@ -199,11 +199,10 @@ const login = async (req, res, next) => {
         return next(error);
     }
 
-    res.json({
+    res.json({   
         message: 'Logged in!',
-        userId: existingUser.id,
-        email: existingUser.email,
-        token: token
+        token: token,
+        userData: existingUser
     });
 };
 

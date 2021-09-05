@@ -77,7 +77,17 @@ const userSchema = new Schema({
         type: mongoose.Types.ObjectId, 
         required: true, 
         ref: 'Shift'
-    }]
+    }],
+    color_bkgr: {
+        type: String,
+        required: false,
+        default: "#274B7D"
+    },
+    color_text: {
+        type: String,
+        required: false,
+        default: "#FFFFFF"
+    }
 });
 
 userSchema.plugin(uniqueValidator);

@@ -45,6 +45,7 @@ const SignIn = () => {
         .then(result => {
             if (result.hasOwnProperty("token")) {
                 localStorage.setItem('logged_in_token', result.token);
+                localStorage.setItem('userData', JSON.stringify(result.userData));
                 history.push("/");
             } else {
                 localStorage.removeItem('logged_in_token');

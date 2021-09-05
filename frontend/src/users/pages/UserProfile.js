@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+
 import UserForm from '../components/UserForm';
 
-const UserProfile = () => {
+const UserProfile = (props) => {
     const [userData, setUserData] = useState();
-    const user_id = useParams().id;
+    let user_id = useParams().id;
 
     const fetch_user_profile = async () => {
-        if (!userData) {
+        let token = localStorage.getItem("logged_in_token");
+        if (!userData && token && user_id !== 'create') {
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", `Bearer ${token}`);
             var requestOptions = {
                 method: 'GET',
+                headers: myHeaders,
                 redirect: 'follow'
             };
     
@@ -26,17 +31,19 @@ const UserProfile = () => {
                 }
             })
             .catch(error => console.log('error', error));
+        } else {
+            setUserData({});
         }
     }
 
     useEffect(() => {
         fetch_user_profile();
-    })
+    }, [])
 
     return (
         <>
             { userData ?
-                <UserForm data={userData} type="sign_up" /> : <h1>No data</h1>
+                <UserForm data={userData} /> : <></>
             }
         </>
     )
