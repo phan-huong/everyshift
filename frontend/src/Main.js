@@ -8,7 +8,7 @@ import NavFooter from './shared/components/Navigation/NavFooter';
 import Users from './users/pages/Users';
 import About from './places/pages/About';
 import UserProfile from './users/pages/UserProfile';
-import Calendar from './calendar/components/Calendar';
+import Calendar from './calendar/pages/Calendar';
 
 
 const Main = (props) => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-// import DateToday from '../../functions/Date';
+import DateToday from '../../functions/Date';
 import MainHeader from './MainHeader';
 import SideDrawer from './SideDrawer';
 import './NavBar.css';
@@ -33,7 +33,7 @@ const NavHeader = props => {
                     </div>
                     <p className="headerUsername">{username}</p>
                 </div>
-                {/* <DateToday /> */}
+                <DateToday />
             </MainHeader>
             <SideDrawer />
         </React.Fragment>

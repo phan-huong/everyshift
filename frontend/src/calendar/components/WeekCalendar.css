@@ -1,0 +1,31 @@
+.calendar_page {
+    text-align: center;
+}
+
+.calendar_wrapper {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 1rem;
+}
+
+.calendar_controller {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    margin-top: 5px;
+    border-bottom: 1px solid black;
+}
+
+.calendar_controller p {
+    margin-bottom: 5px!important;
+}
+
+.calender_inner_wrapper {
+    display: grid;
+    grid-template-columns: 1fr 7fr;
+}
+
+.days_of_week_label {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    font-weight: bold;
+}

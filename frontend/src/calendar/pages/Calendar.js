@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Calendar from '../components/Calendar';
+import WeekCalendar from '../components/WeekCalendar';
 
 const Calendar = () => {
-    return <Calendar />
+    return <WeekCalendar />
 };
 
 export default Calendar;
