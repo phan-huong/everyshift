@@ -17,7 +17,7 @@ const Main = (props) => {
             <NavHeader />
             <main>
                 <Switch>
-                    <Route exact path="/users" component={Users} />
+                    <Route exact path="/users/employees" component={Users} />
                     <Route exact path="/about" component={About} />
                     <Route exact path="/users/:id" component={UserProfile} />
                     <Route exact path="/signup" component={SignUp} />

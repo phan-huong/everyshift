@@ -14,6 +14,9 @@ router.use(checkAuth);
 // Get all users
 router.get('/', usersController.getAllUsers);
 
+// Get all employees
+router.get('/employees', usersController.getAllEmployees);
+
 // Get user by ID
 router.get('/:id', usersController.getUserByID);
 

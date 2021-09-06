@@ -18,6 +18,38 @@ const getAllUsers = async (req, res, next) => {
     res.json({users: users.map(user => user.toObject({ getters: true }))});
 };
 
+// Get all employees
+const getAllEmployees = async (req, res, next) => {
+    // Find manager by ID
+    let manager_id = req.headers.manager_id;
+    // console.log(manager_id)
+    let manager;
+    if (manager_id && manager_id !== '') {
+        try {
+            manager = await User.findOne({ _id: manager_id, role: 'manager' });
+        } catch (err) {
+            const error = new HttpError('Could not find manager!', 500);
+            return next(error);
+        }
+
+        let employees;
+        if (manager) {
+            try {
+                employees = await User.find({ role: 'employee'}, '-password');
+            } catch (err) {
+                const error = new HttpError('Fetching users failed!', 500);
+                return next(error);
+            }
+            res.json({ users: employees.map(user => user.toObject({ getters: true })) });
+        } else {
+            res.json({ users: [] })
+        }
+    } else {
+        res.json({ users: [] })
+    }
+    
+};
+
 // Get user by ID
 const getUserByID = async (req, res, next) => {
     let user_id = req.params.id;
@@ -74,7 +106,7 @@ const updateUser = async (req, res, next) => {
             const error = new HttpError('Email already exists!', 422);
             return next(error);
         }
-        
+
         edited_user.email = email;
     }
 
@@ -237,6 +269,7 @@ const login = async (req, res, next) => {
 };
 
 exports.getAllUsers = getAllUsers;
+exports.getAllEmployees = getAllEmployees;
 exports.getUserByID = getUserByID;
 exports.updateUser = updateUser;
 exports.signup = signup;
