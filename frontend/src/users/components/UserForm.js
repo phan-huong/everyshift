@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
+// import { useHistory } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import "bootstrap/dist/css/bootstrap.css";
 import { to_raw_date } from '../../shared/functions/FormatDate';
-import { isEmptyObject } from '../../shared/functions/General';
+import { isEmptyObject, get_local_user_data, update_local_user_data } from '../../shared/functions/General';
 
+import "bootstrap/dist/css/bootstrap.css";
 import './UserForm.css';
 
 const UserForm = (props) => {
+    // let history = useHistory();
+    const [localUser, setLocalUser] = useState(get_local_user_data())
+
     // Prepare data
-    const current_user_role = JSON.parse(localStorage.getItem("userData")).role;
-    const current_user_id = JSON.parse(localStorage.getItem("userData"))._id;
+    // const current_user_role = JSON.parse(localStorage.getItem("userData")).role;
+    // const current_user_id = JSON.parse(localStorage.getItem("userData"))._id;
     const user_data = props.data;
     const user_role = user_data.role ? user_data.role : '';
     const first_name = user_data.firstName ? user_data.firstName : '';
@@ -91,43 +95,79 @@ const UserForm = (props) => {
     const { register, handleSubmit, reset, formState } = useForm(formOptions);
     const { errors } = formState;
 
-    const update_user_by_id = async (data) => {
-        let token = localStorage.getItem("logged_in_token");
-        if (!isEmptyObject(user_data) && token) {
-            var myHeaders = new Headers();
-            myHeaders.append("Authorization", `Bearer ${token}`);
-            myHeaders.append("Content-Type", "application/json");
-            
-            var raw = JSON.stringify(data);
-            
-            var requestOptions = {
-                method: 'PATCH',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
-            
-            var status_code;
-            await fetch(`http://localhost:9000/users/${user_data._id}`, requestOptions)
-            .then(response =>  {
-                status_code = response.status;
-                console.log(response);
-                return response.json()
-            })
-            .then(result => {
-                if (status_code === 200) {
-                    console.log(result);
-                    alert('Updated successfully!');
-                }
-            })
-            .catch(error => {
-                console.log('error', error);
-                alert('Updated failed!');
-            });
-        }
-    }
-
     const onSubmit = (data) => {
+        const update_user_by_id = async (data) => {
+            let token = localStorage.getItem("logged_in_token");
+            if (token) {
+                var myHeaders = new Headers();
+                myHeaders.append("Authorization", `Bearer ${token}`);
+                myHeaders.append("Content-Type", "application/json");
+    
+                var raw = JSON.stringify(data);
+    
+                if (!isEmptyObject(user_data)) {   // update user
+                    let requestOptionsPatch = {
+                        method: 'PATCH',
+                        headers: myHeaders,
+                        body: raw,
+                        redirect: 'follow'
+                    };
+                    
+                    let status_code;
+                    await fetch(`http://localhost:9000/users/${user_data._id}`, requestOptionsPatch)
+                    .then(response => {
+                        status_code = response.status;
+                        // console.log(response);
+                        return response.json()
+                    })
+                    .then(result => {
+                        if (status_code === 200) {
+                            // console.log(result);
+                            // alert('Updated successfully!');
+                            if (localUser._id === result.edited_user._id) {
+                                setLocalUser(result.edited_user);
+                                update_local_user_data(result.edited_user);
+                                // history.push("/");
+                                window.location.href="/"
+                            } else {
+                                window.location.href="/users/employees"
+                                // history.push("/users/employees");
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.log('error', error);
+                        alert('Updated failed!');
+                    });
+                } else {    // Create user
+                    let requestOptionsPost = {
+                        method: 'POST',
+                        headers: myHeaders,
+                        body: raw,
+                        redirect: 'follow'
+                    };
+        
+                    let status_code;
+                    await fetch("http://localhost:9000/users/signup", requestOptionsPost)
+                    .then(response => {
+                        status_code = response.status;
+                        // console.log(response);
+                        return response.json()
+                    })
+                    .then(result => {
+                        if (status_code === 201) {
+                            console.log(result);
+                            alert('Created successfully!');
+                        }
+                    })
+                    .catch(error => {
+                        console.log('error', error);
+                        alert('Created failed!');
+                    });
+                }
+            }
+        }
+
         update_user_by_id(data);
     }
 
@@ -136,7 +176,7 @@ const UserForm = (props) => {
             { isEmptyObject(user_data) ? <h4>Create a new account</h4> : <></> }
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input name="form_signup" type="hidden" {...register('form_signup')} value={isEmptyObject(props.data) ? 1 : 0} />
-                <input name="current_user_id" type="hidden" value={current_user_id ? current_user_id : -1} />
+                <input name="current_user_id" type="hidden" value={localUser._id ? localUser._id : -1} />
 
                 <div>
                     <label>Position</label>
@@ -144,7 +184,7 @@ const UserForm = (props) => {
                         name="role" 
                         {...register('role')} 
                         className={`form-control ${errors.role ? 'is-invalid' : ``}`} 
-                        disabled={current_user_role !== 'manager' ? true : false}
+                        disabled={localUser.role !== 'manager' ? true : false}
                         defaultValue={user_role}
                     >
                         <option value="">Please choose role</option>
@@ -230,12 +270,12 @@ const UserForm = (props) => {
                         <div className="invalid-feedback">{errors.entryDate?.message}</div>
                     </div>
                 </div>
-                <div className={ current_user_id === user_data._id ? '' : 'd-none' }>
+                <div className={ localUser._id === user_data._id || isEmptyObject(user_data) ? '' : 'd-none' }>
                     <label>Password</label>
                     <input name="password" type="password" {...register('password')} className={`form-control ${errors.password ? 'is-invalid' : ''}`} />
                     <div className="invalid-feedback">{errors.password?.message}</div>
                 </div>
-                <div className={ current_user_id === user_data._id ? '' : 'd-none' }>
+                <div className={ localUser._id === user_data._id || isEmptyObject(user_data) ? '' : 'd-none' }>
                     <label>Confirm Password</label>
                     <input name="confirmPassword" type="password" {...register('confirmPassword')} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} />
                     <div className="invalid-feedback">{errors.confirmPassword?.message}</div>
