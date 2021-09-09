@@ -5,11 +5,11 @@ const { check } = require('express-validator');
 const shiftsControllers = require('../controllers/shifts-controllers');
 const checkAuth = require('../middleware/check-auth');
 
-router.get('/', shiftsControllers.getAllShifts);
-router.get('/:sid', shiftsControllers.getShiftById);
-router.get('/:uid', shiftsControllers.getShiftsByUserId);
-
 router.use(checkAuth);
+
+router.get('/', shiftsControllers.getAllShifts);
+router.get('/shift/:sid', shiftsControllers.getShiftById);
+router.get('/:uid', shiftsControllers.getShiftsByUserId);
 
 router.post('/',
     [
@@ -17,10 +17,13 @@ router.post('/',
             .not()
             .isEmpty(),
         check('job').isLength({min: 5}),
-        check('time')
+        check('start_time')
             .not()
             .isEmpty(),
-        check('done')
+        check('end_time')
+            .not()
+            .isEmpty(),
+        check('status')
             .not()
             .isEmpty(),
         check('worker')
@@ -36,7 +39,13 @@ router.patch('/:sid',
             .not()
             .isEmpty(),
         check('job').isLength({min: 5}),
-        check('time')
+        check('start_time')
+            .not()
+            .isEmpty(),
+        check('end_time')
+            .not()
+            .isEmpty(),
+        check('status')
             .not()
             .isEmpty()
     ],
