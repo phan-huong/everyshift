@@ -49,3 +49,25 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+#root {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.page_wrapper {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-flow: column;
+}
+
+main {
+  flex: 2;
+  overflow: auto;
+  margin: 1rem 0;
+  padding: 0;
+}

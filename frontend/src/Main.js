@@ -15,7 +15,7 @@ const Main = (props) => {
     const [localUser, setLocalUser] = useState(get_local_user_data())
 
     useEffect(() => {
-        console.log("Getting user data...")
+        // console.log("Getting user data...")
         const fetch_user_profile = async () => {
             let token = localStorage.getItem("logged_in_token");
             if (token && localUser._id) {
@@ -48,7 +48,7 @@ const Main = (props) => {
 
     if (!props.authorized) return <Redirect to="/signin" />
     return (
-        <>
+        <div className="page_wrapper">
             <NavHeader />
             <main>
                 <Switch>
@@ -60,7 +60,7 @@ const Main = (props) => {
                 </Switch>
             </main>
             <NavFooter />
-        </>
+        </div>
     )
 }
 

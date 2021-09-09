@@ -25,7 +25,7 @@ const NavHeader = props => {
     }, [username, userImageURL])
     
     return (
-        <React.Fragment>
+        <header>
             <MainHeader>
                 <div className="headerUserContainer">
                     <div>
@@ -36,7 +36,7 @@ const NavHeader = props => {
                 <DateToday />
             </MainHeader>
             <SideDrawer />
-        </React.Fragment>
+        </header>
     )
 };
 

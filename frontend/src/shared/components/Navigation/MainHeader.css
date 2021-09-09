@@ -4,9 +4,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: fixed;
+    /* position: fixed;
     top: 0;
-    left: 0;
+    left: 0; */
     /* background: #3C5A8C; */
     background: #274B7D;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.60);
@@ -14,9 +14,9 @@
     z-index: 5;
   }
   
-  main {
+  /* main {
     margin-top: 5rem;
-  }
+  } */
   
   @media (min-width: 768px) {
     .mainHeader {
