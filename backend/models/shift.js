@@ -12,19 +12,17 @@ const shiftSchema = new Schema({
         type: String,
         required: true
     },
-    time: {
-        start_time: {
-            type: String,
-            required: true
-        },
-        end_time: {
-            type: String,
-            required: true
-        }
+    start_time: {
+        type: String,
+        required: true
     },
-    done: {
-        type: Boolean,
-        default: false,
+    end_time: {
+        type: String,
+        required: true
+    },
+    status: {
+        type: String,
+        default: 'pending',
         required: true
     },
     worker: {

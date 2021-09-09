@@ -3,25 +3,18 @@ const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 
 const HttpError = require('../models/http-error');
-const Shift = require('../models/Shift');
+const Shift = require('../models/shift');
 const User = require('../models/user');
 
-let DUMMY_SHIFTS = [
-    {
-        id: 's1',
-        date: '15-08-2021',
-        job: 'front-desk',
-        time: {
-            start_time: '08:30',
-            end_time: '15:00'
-        },
-        done: true,
-        worker: 'u1'
+const getAllShifts = async (req, res, next) => {
+    let shifts;
+    try {
+        shifts = await Shift.find({});
+    } catch (err) {
+        const error = new HttpError('Fetching shifts failed!', 500);
+      return next(error);
     }
-];
-
-const getAllShifts = (req, res, next) => {
-    res.json({ users: DUMMY_SHIFTS });
+    res.json({shifts: shifts.map(user => user.toObject({ getters: true }))});
 };
 
 const getShiftById = async (req, res, next) => {
@@ -29,7 +22,7 @@ const getShiftById = async (req, res, next) => {
 
     let shift;
     try {
-        shift = await shift.findById(shiftId);
+        shift = await Shift.findById(shiftId);
     } catch (err) {
         const error = new HttpError('Shift not found, fetching failed!', 500);
       return next(error);
@@ -42,11 +35,12 @@ const getShiftById = async (req, res, next) => {
 };
 
 const getShiftsByUserId = async (req, res, next) => {
-    const userId = req.params.uid;
+    const user_id = req.params.uid;
 
     let userWithShifts;
     try {
-        userWithShifts = await User.findById(userId).populate('shifts');
+        userWithShifts = await User.findById(user_id).populate('shifts');
+        console.log(user_id);
     } catch (err) {
         const error = new HttpError('Shift(s) not found, fetching failed!', 500);
       return next(error);
@@ -65,21 +59,21 @@ const getShiftsByUserId = async (req, res, next) => {
 const createShift = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        // console.log(errors);
         return next(
             new HttpError('Invalid inputs, please check again!', 422)
       );
     }
 
-    const { date, job, time, done, worker } = req.body;
+    const { date, job, start_time, end_time, status, worker } = req.body;
 
     // const title = req.body.title;
     const newShift = new Shift({
         // id: uuidv4(),
         date,
         job,
-        time,
-        done,
+        start_time,
+        end_time,
+        status,
         worker
     });
 
@@ -120,11 +114,11 @@ const updateShiftById = async (req, res, next) => {
         );
     }
     const shiftId = req.params.sid;
-    const { date, job, time, done, worker } = req.body;
+    const { date, job, start_time, end_time, status, worker } = req.body;
 
     let shift;
     try {
-        shift = await shift.findById(shiftId);
+        shift = await Shift.findById(shiftId);
     } catch (err) {
         const error = new HttpError('Could not update shift!', 500);
       return next(error);
@@ -132,8 +126,9 @@ const updateShiftById = async (req, res, next) => {
 
     shift.date = date;
     shift.job = job;
-    shift.time = time;
-    shift.done = done;
+    shift.start_time = start_time;
+    shift.end_time = end_time;
+    shift.status = status;
     shift.worker = worker;
 
     try {
@@ -151,7 +146,7 @@ const deleteShiftById = async (req, res, next) => {
 
     let shift;
     try {
-        shift = await shift.findById(shiftId).populate('worker');
+        shift = await Shift.findById(shiftId).populate('worker');
     } catch (err) {
         const error = new HttpError('Could not delete shift!', 500);
       return next(error);

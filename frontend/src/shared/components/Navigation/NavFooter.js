@@ -42,7 +42,7 @@ const NavFooter = props => {
                     <strong>Timesheet</strong>
                 </Tooltip>
             }>
-                <Link to="/" data-toggle="tooltip" className="navIcon">
+                <Link to="/timesheet" data-toggle="tooltip" className="navIcon">
                     {/* <div><img src={`${process.env.PUBLIC_URL}/icons/timesheet-b.png`} alt="Timesheet Icon" /></div> */}
                     <div><i className="far fa-file-alt"></i><i className="fas fa-clock clockIcon"></i></div>
                     

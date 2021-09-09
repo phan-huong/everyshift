@@ -9,7 +9,8 @@ import Users from './users/pages/Users';
 import About from './places/pages/About';
 import UserProfile from './users/pages/UserProfile';
 import Calendar from './calendar/pages/Calendar';
-
+import Timesheet from './shifts/pages/Timesheet';
+import Home from './home/Home';
 
 const Main = (props) => {
     const [localUser, setLocalUser] = useState(get_local_user_data())
@@ -52,11 +53,13 @@ const Main = (props) => {
             <NavHeader />
             <main>
                 <Switch>
+                    <Route exact path="/" component={Home} />
                     <Route exact path="/users/employees" component={Users} />
                     <Route exact path="/about" component={About} />
                     <Route exact path="/users/:id" component={UserProfile} />
                     <Route exact path="/users/create" component={UserProfile} />
                     <Route exact path="/calendar" component={Calendar} />
+                    <Route exact path="/timesheet" component={Timesheet} />
                 </Switch>
             </main>
             <NavFooter />
