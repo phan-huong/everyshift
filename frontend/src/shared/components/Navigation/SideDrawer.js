@@ -14,8 +14,9 @@ const SideDrawer = () => {
     }
 
     const user_logout = () => {
-        localStorage.removeItem('logged_in_token');
-        localStorage.removeItem('userData');
+        // localStorage.removeItem('logged_in_token');
+        // localStorage.removeItem('userData');
+        localStorage.clear();
         history.push('/signin');
     }
 

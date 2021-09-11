@@ -1,42 +1,36 @@
-import React from 'react';
-import TopBar from './TopBar';
+import React, { useState } from 'react';
+import { change_current_date } from '../../shared/functions/FormatDate';
+
+import CalendarTopBar from './CalendarTopBar';
+import WeekController from './WeekController';
+import CalendarTitle from './CalendarTitle';
+import CalendarMainWrapper from './CalendarMainWrapper';
 import './WeekCalendar.css';
 
 const WeekCalendar = () => {
+    const today = new Date();
+    const [userDate, setUserDate] = useState(today);
+    const DUMMY_SHIFTS = [];
+    // const [currentDayOfWeek, setCurrentDayOfWeek] = useState(today.getDay());
+    // const [currentDayOfMonth, setCurrentDayOfMonth] = useState(today.getDate());
+    // const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+    // const [currentYear, setCurrentYear] = useState(today.getFullYear());
+    // const [weekNumber, setWeekNumber] = useState(get_week_number(today));
 
-    const days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    const days_short = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    const days_super_short = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const months_short = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-    const week_calendar = document.getElementById("week_calendar");
-
-    // Day labels
-    const create_day_labels = () => {
-
-        const day_labels = [];
-
-        for (var i=0; i<days_short.length; i++) {
-            var new_day_label = React.createElement('p', {className: 'day_of_week_label', id: 'day_label_'+i}, days_short[i]);
-            day_labels.push(new_day_label);
-        }
-        return day_labels;
+    const update_week = (days_step) => {
+        let new_date = change_current_date(userDate, days_step);
+        setUserDate(new_date)
     }
 
     return (
         <div className="calendar_page">
-            <h5 className="month_label">August 2021</h5>
             <div className="calendar_wrapper">
-                <TopBar />
-                <div className="calender_inner_wrapper">
-                    <div className="hours_of_day">
-                        {}
-                    </div>
-                    <div className="days_of_week_label" id="week_calendar">
-                        {create_day_labels()}
-                    </div>
-                </div>                
+                <CalendarTopBar currentUserDate={userDate} />
+                <WeekController update={update_week} currentUserDate={userDate} />
+                <div className="calender_inner_wrapper">   
+                    <CalendarTitle currentUserDate={userDate} />
+                    <CalendarMainWrapper shifts={DUMMY_SHIFTS} />
+                </div>
             </div>
         </div>
     )
