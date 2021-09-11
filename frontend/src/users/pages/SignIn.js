@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
+import { get_ip, device_type } from '../../shared/components/localhost';
 import './SignIn.css';
 
 const SignIn = () => {
@@ -36,7 +37,7 @@ const SignIn = () => {
             redirect: 'follow'
         };
         
-        await fetch("http://localhost:9000/users/login", requestOptions)
+        await fetch(`http:///${get_ip(device_type)}:9000/users/login`, requestOptions)
         .then(response => {
             console.log(response);
             if (response.status === 200) console.log('Success!'); else console.log('Failed!');
