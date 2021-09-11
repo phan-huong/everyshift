@@ -96,4 +96,19 @@
 }
 .days_of_week_content > .single_day_content {
     border-right: 1px solid lightgray;
+    position: relative;
+}
+.shift_item {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 30px;
+    top: 120px;
+    /* background-color: lightskyblue; */
+    /* border-radius: 0.2rem; */
+    font-size: 0.8rem;
+    display: grid;
+    align-items: center;
+    box-sizing: border-box;
 }

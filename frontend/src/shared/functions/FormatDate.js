@@ -121,7 +121,7 @@ function get_time_of_day_label(minute_step, top, top_offset) {
         let new_time = make_pretty_time(hour);
         if (top) new_time = { label: new_time, top: top_position + "px" }
         output.push(new_time);
-        top_position += minute_step;
+        if (hour > 0) top_position += minute_step;
     }
 
     return output;
@@ -129,6 +129,10 @@ function get_time_of_day_label(minute_step, top, top_offset) {
 
 function make_pretty_time(time_in) {
     return time_in < 10 ? "0" + time_in : time_in;
+}
+
+function compare_date_standard(date1, date2) {
+    return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate()
 }
 
 export {
@@ -139,7 +143,7 @@ export {
     get_week_by_day,
     correct_day_of_week,
     get_time_of_day_label,
-    to_raw_date,
     get_week_number,
-    to_standard_date
+    to_standard_date,
+    compare_date_standard
 }
