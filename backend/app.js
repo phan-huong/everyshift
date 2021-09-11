@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+const localhost = require('./config/localhost');
 const shiftsRoutes = require('./routes/shifts-routes');
 const usersRoutes = require('./routes/users-routes');
 const HttpError = require('./models/http-error');
@@ -50,4 +51,4 @@ mongoose
 
 // Listening to port
 app.listen(port);
-console.log(`Listening On http://localhost:${port}`);
+console.log(`Listening On http://${localhost.get_ip(localhost.device_type)}:${port}`);

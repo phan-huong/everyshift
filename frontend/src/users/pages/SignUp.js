@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
+import { get_ip, device_type } from '../../shared/components/localhost';
 import './SignUp.css';
 
 const SignUp = () => {
@@ -74,7 +75,7 @@ const SignUp = () => {
             redirect: 'follow'
         };
 
-        await fetch("http://localhost:9000/users/signup", requestOptions)
+        await fetch(`http://${get_ip(device_type)}:9000/users/signup`, requestOptions)
         .then(response => {
             console.log(response);
             if (response.status === 201) alert('Success!'); else alert('Failed!');

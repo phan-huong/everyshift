@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import UsersList from '../components/UsersList';
 import { get_local_user_data } from '../../shared/functions/General';
+import { get_ip, device_type } from '../../shared/components/localhost';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -21,7 +22,7 @@ const Users = () => {
                 };
     
                 var status_code;
-                await fetch("http://localhost:9000/users/employees", requestOptions)
+                await fetch(`http://${get_ip(device_type)}:9000/users/employees`, requestOptions)
                 .then(response => {
                     status_code = response.status;
                     return response.json()

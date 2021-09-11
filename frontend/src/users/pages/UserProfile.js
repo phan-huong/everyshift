@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { get_ip, device_type } from '../../shared/components/localhost';
+
 import UserForm from '../components/UserForm';
 
 const UserProfile = (props) => {
@@ -20,7 +22,7 @@ const UserProfile = (props) => {
                 };
         
                 var status_code;
-                await fetch(`http://localhost:9000/users/${user_id}`, requestOptions)
+                await fetch(`http://${get_ip(device_type)}:9000/users/${user_id}`, requestOptions)
                 .then(response => {
                     status_code = response.status;
                     return response.json()

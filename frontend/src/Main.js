@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { get_local_user_data } from './shared/functions/General';
 import NavHeader from './shared/components/Navigation/NavHeader';
 import NavFooter from './shared/components/Navigation/NavFooter';
+import { get_ip, device_type } from './shared/components/localhost';
 
 import Users from './users/pages/Users';
 import About from './places/pages/About';
@@ -29,7 +30,7 @@ const Main = (props) => {
                 };
         
                 var status_code;
-                await fetch(`http://localhost:9000/users/${localUser._id}`, requestOptions)
+                await fetch(`http://${get_ip(device_type)}:9000/users/${localUser._id}`, requestOptions)
                 .then(response => {
                     status_code = response.status;
                     return response.json()

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 import './SideDrawer.css';
+import NavIcon from '../UIElements/NavIcon';
 
 const SideDrawer = () => {
     let history = useHistory();
@@ -36,13 +37,25 @@ const SideDrawer = () => {
 
     return <aside>
         <nav id="sideDrawer">
-            <Link to={`/users/${userID}`} onClick={() => { closeDrawer(); window.location.href=`/users/${userID}`; }}>User Profile</Link>
-            { userRole === "manager" ? <Link to="/users/create" onClick={() => { closeDrawer(); window.location.href="/users/create"; }}>Create user</Link> : <></> }
-            { userRole === "manager" ? <Link to="/users/employees" onClick={closeDrawer}>Manage employees</Link> : <></> }
-            <Link to="/" onClick={closeDrawer}>Settings</Link>
-            <Link to="/about" onClick={closeDrawer}>About</Link>
-            <Link to="/signin" onClick={() => { closeDrawer(); user_logout(); }}>Sign out</Link>
-            {/* <Link onClick={closeDrawer} to="#">Close</Link> */}
+            <div className="sideDrawerWrapper">
+                <Link to={`/users/${userID}`} onClick={() => { closeDrawer(); window.location.href=`/users/${userID}`; }}>
+                    <NavIcon icon={<i className="fas fa-id-badge"></i>} text={"User Profile"}/>
+                </Link>
+                { userRole === "manager" ? <Link to="/users/create" onClick={() => { closeDrawer(); window.location.href="/users/create"; }}>
+                    <NavIcon icon={<i className="fas fa-user-plus"></i>} text={"Create User"}/></Link> : <></> }
+                { userRole === "manager" ? <Link to="/users/employees" onClick={closeDrawer}>
+                    <NavIcon icon={<i className="fas fa-users"></i>} text={"Manage Employees"}/></Link> : <></> }
+                <Link to="/" onClick={closeDrawer}>
+                    <NavIcon icon={<i className="fas fa-cogs"></i>} text={"Settings"}/>
+                </Link>
+                <Link to="/about" onClick={closeDrawer}>
+                    <NavIcon icon={<i className="fas fa-info-circle"></i>} text={"About"}/>
+                </Link>
+                <Link to="/signin" onClick={() => { closeDrawer(); user_logout(); }}>
+                    <NavIcon icon={<i className="fas fa-sign-out-alt"></i>} text={"Sign out"}/>
+                </Link>
+                {/* <Link onClick={closeDrawer} to="#">Close</Link> */}
+            </div>
         </nav>
     </aside>
 };

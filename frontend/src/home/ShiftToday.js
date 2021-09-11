@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { get_local_user_data } from '../shared/functions/General';
 import { to_raw_date } from '../shared/functions/FormatDate';
+import { get_ip, device_type } from '../shared/components/localhost';
 
 import './ShiftToday.css';
 
@@ -22,7 +23,7 @@ const ShiftToday = (props) => {
             };
     
             var status_code;
-            await fetch(`http://localhost:9000/shifts/${user_id}`, requestOptions)
+            await fetch(`http://${get_ip(device_type)}:9000/shifts/${user_id}`, requestOptions)
             .then(response => {
                 status_code = response.status;
                 return response.json()
@@ -54,7 +55,10 @@ const ShiftToday = (props) => {
                 shift_status = shift_today.status;
             }
         } 
-        if (shifts_today.length === 0) {
+        if (shifts_today.length === 0 || 
+            (shifts_today.length === 1 && shift_status === 'pending') || 
+            (shifts_today.length === 1 && shift_status === 'denied') 
+            ) {
             return <div className="work_day">
                 <div>
                     <p>You are free today!</p>

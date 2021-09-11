@@ -40,7 +40,6 @@ const getShiftsByUserId = async (req, res, next) => {
     let userWithShifts;
     try {
         userWithShifts = await User.findById(user_id).populate('shifts');
-        console.log(user_id);
     } catch (err) {
         const error = new HttpError('Shift(s) not found, fetching failed!', 500);
       return next(error);

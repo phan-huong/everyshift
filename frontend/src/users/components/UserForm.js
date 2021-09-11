@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { to_raw_date } from '../../shared/functions/FormatDate';
 import { isEmptyObject, get_local_user_data, update_local_user_data } from '../../shared/functions/General';
+import { get_ip, device_type } from '../../shared/components/localhost';
 
 import "bootstrap/dist/css/bootstrap.css";
 import './UserForm.css';
@@ -114,7 +115,7 @@ const UserForm = (props) => {
                     };
                     
                     let status_code;
-                    await fetch(`http://localhost:9000/users/${user_data._id}`, requestOptionsPatch)
+                    await fetch(`http://${get_ip(device_type)}:9000/users/${user_data._id}`, requestOptionsPatch)
                     .then(response => {
                         status_code = response.status;
                         // console.log(response);
@@ -148,7 +149,7 @@ const UserForm = (props) => {
                     };
         
                     let status_code;
-                    await fetch("http://localhost:9000/users/signup", requestOptionsPost)
+                    await fetch(`http://${get_ip(device_type)}:9000/users/signup`, requestOptionsPost)
                     .then(response => {
                         status_code = response.status;
                         // console.log(response);
