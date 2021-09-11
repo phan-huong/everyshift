@@ -10,11 +10,32 @@ const getAllShifts = async (req, res, next) => {
     let shifts;
     try {
         shifts = await Shift.find({});
+        if (shifts) {
+
+            for (const shift of shifts) {
+                // console.log(shift)
+                let shift_owner;
+                try {
+                    shift_owner = await User.findById(shift.worker).select('firstName lastName role color_bkgr color_text');
+                } catch (err) {
+                    const error = new HttpError('Fetching shift owner failed!', 500);
+                    return next(error);
+                }
+
+                if (shift_owner) {
+                    // console.log(shift_owner)
+                    shift.worker = shift_owner
+                    console.log(shift)
+                }
+            }
+
+            // console.log(shifts)
+        }
     } catch (err) {
         const error = new HttpError('Fetching shifts failed!', 500);
       return next(error);
     }
-    res.json({shifts: shifts.map(user => user.toObject({ getters: true }))});
+    res.json({shifts: shifts.map(shift => shift.toObject({ getters: true }))});
 };
 
 const getShiftById = async (req, res, next) => {
