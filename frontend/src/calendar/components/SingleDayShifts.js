@@ -33,6 +33,7 @@ const SingleDayShifts = (props) => {
             {
                 shifts.length > 0 ? 
                 shifts.map((shift, index) => {
+                    // console.log(shift)
                     return (
                         <ShiftItem key={`shift_item_${index}`} shift={shift} item_height={props.item_height} />
                     )

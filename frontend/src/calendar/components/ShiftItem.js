@@ -1,4 +1,6 @@
 import React from "react";
+import { get_short_name } from "../../shared/functions/General";
+import { open_custom_modal } from "../../shared/components/UIElements/CustomModal";
 
 const ShiftItem = (props) => {
     const set_properties = () => {
@@ -27,9 +29,12 @@ const ShiftItem = (props) => {
                 break;
         }
 
+        let final_worker_name = get_short_name(props.shift.worker.firstName, props.shift.worker.lastName)
+
         output.top = final_top;
         output.height = final_height;
         output.classes = final_classes;
+        output.worker_name = final_worker_name;
 
         return output;
     }
@@ -39,8 +44,9 @@ const ShiftItem = (props) => {
         <div 
             className={`shift_item rounded border border-light ${properties.classes}`}
             style={{ "top": properties.top, "height": properties.height }}
+            onClick={() => { open_custom_modal("edit_shift_modal") }}
         >
-            Test
+            <span>{properties.worker_name}</span>
         </div>
     );
 }

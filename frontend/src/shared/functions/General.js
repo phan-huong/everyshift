@@ -19,9 +19,31 @@ function sort_by_date (arr) {
     return arr;
 }
 
+/**
+ * Convert a full name to super short name
+ * E.g. Rose Smith => RS or José Mário dos Santos Félix Mourinho => JMdSFM
+ * @param {String} firstname 
+ * @param {String} lastname 
+ * @returns {String}
+ */
+function get_short_name(firstname, lastname) {
+    function shorten_name(name) {
+        let sub_names = name.split(' ');
+        let short_name = '';
+        for (const sub_name of sub_names) {
+            short_name += sub_name.substring(0, 1);
+        }
+
+        return short_name;
+    }
+
+    return shorten_name(firstname) + shorten_name(lastname);
+}
+
 export {
     isEmptyObject,
     get_local_user_data,
     update_local_user_data,
-    sort_by_date
+    sort_by_date,
+    get_short_name
 }
