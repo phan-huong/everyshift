@@ -78,7 +78,6 @@ const createShift = async (req, res, next) => {
 
     const { date, job, start_time, end_time, status, worker } = req.body;
 
-    // const title = req.body.title;
     const newShift = new Shift({
         // id: uuidv4(),
         date,

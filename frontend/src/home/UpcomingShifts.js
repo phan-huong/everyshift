@@ -106,7 +106,6 @@ const UpcomingShifts = (props) => {
         <div className="upcoming_shifts_container">
             <NextShifts data={shiftData} />
         </div>   
-        
     </div>
 }
 

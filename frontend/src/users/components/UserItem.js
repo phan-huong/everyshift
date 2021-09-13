@@ -14,7 +14,13 @@ const UserItem = props => {
                     </div>
                     <div className="userInfo">
                         <p className="userInfoName">{props.name}</p>
-                        <p className="userInfoPlace">{props.role}</p>
+                        <div className="userPlace">
+                            <p>{props.role}</p>
+                            <p><i className="fas fa-paint-brush" style={{color:`${props.color}`}}></i><span className="badge badge-pill" style={{background:`${props.color}`}}>
+                                &nbsp; &nbsp; &nbsp;</span>
+                            </p>
+                        </div>
+                        
                     </div>
                 </Link>
             </Card>

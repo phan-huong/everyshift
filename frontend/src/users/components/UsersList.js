@@ -23,6 +23,7 @@ const UsersList = props => {
                         image={user.image} 
                         name={user.name || `${user.firstName} ${user.lastName}`} 
                         role={user.role}
+                        color={user.color_bkgr}
                     />
                 )
         })}
