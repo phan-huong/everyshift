@@ -6,7 +6,7 @@ import { get_ip, device_type } from '../shared/components/localhost';
 
 import './ShiftToday.css';
 
-const ShiftToday = (props) => {
+const ShiftToday = () => {
     const [shiftData, setShiftData] = useState([]);
     const localUser = get_local_user_data();
     const user_id = localUser._id;
@@ -48,13 +48,14 @@ const ShiftToday = (props) => {
             let shift_date_raw = shift_today.date;
             let shift_date = to_raw_date(shift_date_raw);
             if (today === shift_date) {
-                shifts_today.push(shift_date);
+                shifts_today.push(shift_today);
                 today_job = shift_today.job;
                 today_start = shift_today.start_time;
                 today_end = shift_today.end_time;
                 shift_status = shift_today.status;
             }
         } 
+        console.log(shifts_today);
         if (shifts_today.length === 0 || 
             (shifts_today.length === 1 && shift_status === 'pending') || 
             (shifts_today.length === 1 && shift_status === 'denied') 
@@ -83,11 +84,37 @@ const ShiftToday = (props) => {
             </div>
             <img src={`${process.env.PUBLIC_URL}/icons/shift-done.gif`} alt="shift done"/>
         </div>
-        } else if (shifts_today.length > 1) {
-            return <div className="work_day">
-                <p>You have more than one shifts today! Please check with a manager!</p>
+        } if (shifts_today.length === 2) {
+            let shift_1 = shifts_today[0];
+            let shift_2 = shifts_today[1];
+            if (shift_1.status === 'accepted' || shift_2.status === 'accepted') {
+                return <div className="work_day">
+                <div>
+                    <p>It's work day today!</p>
+                    <p>Your job: {shift_1.job}<br />
+                    Time: from {shift_1.start_time} to {shift_1.end_time}</p>
+                    <p>Your job: {shift_2.job}<br />
+                    Time: from {shift_2.start_time} to {shift_2.end_time}</p>
+                </div>
+                <img src={`${process.env.PUBLIC_URL}/icons/work-alarm.gif`} alt="work alarm"/>
             </div>
-        }
+            }
+            if (shift_1.status === 'done' || shift_2.status === 'done') {
+                return <div className="work_day">
+                <div>
+                    <p>You have done your job today!</p>
+                    <p>Just sit back and relax!</p>
+                </div>
+                <img src={`${process.env.PUBLIC_URL}/icons/shift-done.gif`} alt="shift done"/>
+            </div>
+            }
+        } else return <div className="work_day">
+            <div>
+                <p>You are free today!</p>
+                <p>Just sit back and relax!</p>
+            </div>
+            <img src={`${process.env.PUBLIC_URL}/icons/no-work-day.gif`} alt="free day"/>
+        </div>
     }
 
     return <div className="shift_today_wrapper">        

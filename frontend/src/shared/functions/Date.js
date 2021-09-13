@@ -12,7 +12,7 @@ class DateToday extends Component {
     }
 
     render() {
-        return <p className="headerDate">Today: { this.state.currentDate }</p>
+        return <p className="headerDate">{ this.state.currentDate }</p>
     }
 }
 

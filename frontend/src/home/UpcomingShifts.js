@@ -49,7 +49,7 @@ const UpcomingShifts = (props) => {
             }
         }
         
-        let shift_id, shift_date, shift_job, shift_start, shift_end, shift_status;
+        let shift_id, shift_date, shift_job, shift_start, shift_end;
         let display_shifts = [];
 
         const today = new Date();
@@ -57,16 +57,35 @@ const UpcomingShifts = (props) => {
         let upcoming_shifts = [];
         for (var i=0; i<sorted_shift_accepted.length; i++) {
             let day_previous;
-            let day_next = new Date(sorted_shift_accepted[i].date);  
+            let day_next = new Date(sorted_shift_accepted[i].date); 
             if (day_next === today) {
-                if (((i+5)<sorted_shift_accepted.length) || ((i+5)===sorted_shift_accepted.length)){
-                    for (var n=i; n<(i+5); n++) {
-                        upcoming_shifts.push(sorted_shift_accepted[n]);
-                    }
+                if (i === (sorted_shift_accepted.length-1)) {
+                    upcoming_shifts = [];
                 }
-                if ((i+5)>sorted_shift_accepted.length) {
-                    for (var n=i; n<sorted_shift_accepted.length; n++) {
-                        upcoming_shifts.push(sorted_shift_accepted[n]);
+                if (i<(sorted_shift_accepted.length-1)) {
+                    let day_after = sorted_shift_accepted[i+1];
+                    if (day_after !== today) {
+                        if (((i+6)<sorted_shift_accepted.length) || ((i+6)===sorted_shift_accepted.length)){
+                            for (var n=i+1; n<(i+6); n++) {
+                                upcoming_shifts.push(sorted_shift_accepted[n]);
+                            }
+                        }
+                        if ((i+6)>sorted_shift_accepted.length) {
+                            for (var n=i+1; n<sorted_shift_accepted.length; n++) {
+                                upcoming_shifts.push(sorted_shift_accepted[n]);
+                            }
+                        }
+                    } else if (day_after === today) {
+                        if (((i+7)<sorted_shift_accepted.length) || ((i+7)===sorted_shift_accepted.length)){
+                            for (var n=i+2; n<(i+7); n++) {
+                                upcoming_shifts.push(sorted_shift_accepted[n]);
+                            }
+                        }
+                        if ((i+7)>sorted_shift_accepted.length) {
+                            for (var n=i+2; n<sorted_shift_accepted.length; n++) {
+                                upcoming_shifts.push(sorted_shift_accepted[n]);
+                            }
+                        }
                     }
                 }
             } else if (day_next !== today) {
@@ -100,12 +119,11 @@ const UpcomingShifts = (props) => {
                 shift_job = shift.job;
                 shift_start = shift.start_time;
                 shift_end = shift.end_time;
-                shift_status = shift.status;
-                let el = <div className="upcoming_shift" id={shift_id}>
+                let el = <div className="upcoming_shift" key={shift_id}>
                         <p className="upcoming_shift_date">{shift_date}</p>
                         <div className="upcoming_shift_info">
                             <p>Your job: {shift_job}<br/>
-                            Starts at: {shift_start} &nbsp; &nbsp; / &nbsp; &nbsp; ends at: {shift_start}</p>
+                            Starts at: {shift_start} &nbsp; &nbsp; / &nbsp; &nbsp; ends at: {shift_end}</p>
                         </div>
                     </div>
                 display_shifts.push(el);
@@ -116,7 +134,9 @@ const UpcomingShifts = (props) => {
                     <p>You don't have any shifts awaiting <i className="far fa-grin-beam-sweat"></i></p>
                     <p>Apply for work by adding shifts to wishlist</p>
                 </div>
-                <button className="add_to_wishlist_btn btn mr-1 formBtn"><i className="far fa-plus-square"></i> &nbsp; Add shifts to wishlist</button>
+                <button className="add_to_wishlist_btn btn mr-1 formBtn" onClick={() => {window.location.href="/shifts/create"}}>
+                    <i className="fa fa-plus mr-4"></i><span>Add shifts to wishlist</span>
+                </button>
             </div>
         }     
     }
@@ -126,7 +146,6 @@ const UpcomingShifts = (props) => {
         <div className="upcoming_shifts_container">
             {display_shifts()}
         </div>   
-        
     </div>
 }
 
