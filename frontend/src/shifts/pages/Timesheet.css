@@ -1,11 +1,15 @@
-.timesheet_tab {
-    background-color: #555;
-    color: white;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    font-size: 17px;
-    width: 25%;
+  .timesheet_wrapper {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  .nav-link.active {
+    background-color: #274B7D!important;
+  }
+  .finishedShifts.nav-link.active {
+    background-color: green!important;
+  }
+  .nav-item.nav-link {
+    color: black;
+    border-radius: 10px 10px 0 0!important;
+    border-bottom: 1px solid #274B7D;
   }
