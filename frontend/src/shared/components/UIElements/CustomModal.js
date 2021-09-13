@@ -18,20 +18,20 @@ const CustomModal = (props) => {
         <div id={props.id} className="custom_modal">
             <div className="custom_modal_wrapper rounded">
                 <div className="custom_modal_header">
-                    <div className="title"><i className="fa fa-pencil"></i>{props.title}</div>
+                    <div className="title">{props.title}</div>
                     <div className="close_btn">
                         <button onClick={() => { close_custom_modal(props.id) }}><i className="fa fa-times"></i></button>
                     </div>
                 </div>
                 <div className="custom_modal_content">
-                    <div className="main_content">
+                    <div id={props.main_content_id} className="main_content">
                         {props.children}
                     </div>
                 </div>
                 <div className="custom_modal_footer">
                     <div className="status"></div>
                     <div className="buttons">
-                        <button className="btn btn-success" onClick={() => { close_custom_modal(props.id) }}>Apply</button>
+                        { props.has_action_btn ? <button className="btn btn-success" onClick={() => { close_custom_modal(props.id) }}>Apply</button> : <></> }
                         { props.has_close_btn ? <button className="btn btn-secondary" onClick={() => { close_custom_modal(props.id) }}>Close</button> : <></> }
                     </div>
                 </div>

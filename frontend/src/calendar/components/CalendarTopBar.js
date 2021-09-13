@@ -24,7 +24,7 @@ const CalendarTopBar = (props) => {
     }
 
     return (
-        <h5 className="month_label">{display_month_and_year()}</h5>
+        <h5 className="month_label mb-0">{display_month_and_year()}</h5>
     )
 }
 
