@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
-// import { useHistory } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { to_raw_date } from '../../shared/functions/FormatDate';
@@ -11,12 +10,9 @@ import "bootstrap/dist/css/bootstrap.css";
 import './UserForm.css';
 
 const UserForm = (props) => {
-    // let history = useHistory();
     const [localUser, setLocalUser] = useState(get_local_user_data())
 
     // Prepare data
-    // const current_user_role = JSON.parse(localStorage.getItem("userData")).role;
-    // const current_user_id = JSON.parse(localStorage.getItem("userData"))._id;
     const user_data = props.data;
     const user_role = user_data.role ? user_data.role : '';
     const first_name = user_data.firstName ? user_data.firstName : '';

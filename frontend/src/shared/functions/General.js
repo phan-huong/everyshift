@@ -6,8 +6,16 @@ function get_local_user_data() {
     return JSON.parse(localStorage.getItem("userData"));
 }
 
+function get_local_user_token() {
+    return localStorage.getItem("logged_in_token");
+}
+
 function update_local_user_data(data) {
     localStorage.setItem("userData", JSON.stringify(data));
+}
+
+function check_if_manager(userData) {
+    return userData.role === 'manager' ? true : false;
 }
 
 function sort_by_date (arr) {
@@ -42,8 +50,10 @@ function get_short_name(firstname, lastname) {
 
 export {
     isEmptyObject,
+    get_local_user_token,
     get_local_user_data,
     update_local_user_data,
+    check_if_manager,
     sort_by_date,
     get_short_name
 }

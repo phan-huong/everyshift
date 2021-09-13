@@ -10,7 +10,8 @@ const shiftSchema = new Schema({
     },
     job: {
         type: String,
-        required: true
+        required: false,
+        default: ''
     },
     start_time: {
         type: String,

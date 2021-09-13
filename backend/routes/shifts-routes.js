@@ -16,7 +16,6 @@ router.post('/',
         check('date')
             .not()
             .isEmpty(),
-        check('job').isLength({min: 5}),
         check('start_time')
             .not()
             .isEmpty(),
@@ -38,7 +37,7 @@ router.patch('/:sid',
         check('date')
             .not()
             .isEmpty(),
-        check('job').isLength({min: 5}),
+        // check('job').isLength({min: 5}),
         check('start_time')
             .not()
             .isEmpty(),

@@ -8,7 +8,11 @@ const CALENDAR = {
     height_rate: 0.5
 }
 
-// Convert a date to format YYYY-MM-DD
+/**
+ * Convert a date to format YYYY-MM-DD
+ * @param {String} date_in 
+ * @returns {String}
+ */
 function to_raw_date(date_in) {
     let date_out = '';
     if (date_in) {
@@ -111,7 +115,6 @@ function correct_day_of_week(old_day) {
     return new_day;
 }
 
-
 function get_time_of_day_label(minute_step, top, top_offset) {
     let output = [];
     // let top_position = top_offset ? top_offset : 0;
@@ -135,6 +138,21 @@ function compare_date_standard(date1, date2) {
     return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate()
 }
 
+function get_localstorage_current_date() {
+    var localstorage_date_raw = localStorage.getItem("current_date");
+    if (localstorage_date_raw) {
+        return new Date(localstorage_date_raw)
+    } else {
+        let today = new Date();
+        localStorage.setItem("current_date", today);
+        return today;
+    }
+}
+
+function set_localstorage_current_date(new_date) {
+    localStorage.setItem("current_date", new_date);
+}
+
 export {
     CALENDAR,
     to_raw_date,
@@ -145,5 +163,7 @@ export {
     get_time_of_day_label,
     get_week_number,
     to_standard_date,
-    compare_date_standard
+    compare_date_standard,
+    get_localstorage_current_date,
+    set_localstorage_current_date
 }

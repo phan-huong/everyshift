@@ -31,3 +31,18 @@
     grid-template-columns: 3fr 2fr;
     grid-column-gap: 1rem;
 }
+
+.signupFormContainer form .action_buttons {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+}
+
+.signupFormContainer form .action_buttons > .left_btns {
+    justify-self: start;
+}
+
+.signupFormContainer form .action_buttons > .right_btns {
+    justify-self: end;
+}
