@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { get_short_name, get_local_user_data, check_if_manager } from "../../shared/functions/General";
+import { get_local_user_data, check_if_manager } from "../../shared/functions/General";
 import { to_standard_date } from "../../shared/functions/FormatDate";
 import { open_custom_modal } from "../../shared/components/UIElements/CustomModal";
 
@@ -61,16 +61,23 @@ const ShiftItem = (props) => {
         const multiple_data = Array.isArray(props.data);
 
         const EmployeeItem = (props) => {
+            // console.log(props.data)
             return (
                 <a 
                     href={props.data.status !== 'done' ? `/shifts/${props.data._id}` : "javascript:void(0)"} 
                     className={`list-group-item list-group-item-action list-group-item-${set_status_color(props.data.status)}`}
                 >
                     <div>
-                        <span>{`${props.data.worker.firstName} ${props.data.worker.lastName}`}</span>
+                        <span>
+                            { 
+                                check_if_manager(local_userData) ? 
+                                `${props.data.worker.firstName} ${props.data.worker.lastName}`
+                                : 'Myself'
+                            }
+                        </span>
                         <span>{props.data.status}</span>
                     </div>
-                    { props.data.status !== 'done' ? <i class="fa fa-pencil"></i> : <></>}
+                    { props.data.status !== 'done' ? <i className="fa fa-pencil"></i> : <></>}
                 </a>
             )
         }
