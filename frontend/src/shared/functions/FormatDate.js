@@ -38,6 +38,39 @@ function to_standard_date(date_in) {
     return date_out;
 }
 
+// Function to get Month
+function get_this_month(date_in) {
+    let date_out = '';
+    if (date_in) {
+        let new_date = new Date(date_in);
+        let new_month = new_date.getMonth() + 1;
+        date_out = `${new_month}`;
+    }
+    return date_out;
+}
+
+// Function to get Year
+function get_this_year(date_in) {
+    let date_out = '';
+    if (date_in) {
+        let new_date = new Date(date_in);
+        let new_year = new_date.getFullYear();
+        date_out = `${new_year}`;
+    }
+    return date_out;
+}
+
+// Function to get Hour as number
+function get_hour_as_number(time_in) {
+    let hour_out;
+    if (time_in) {
+        let hour_arr = time_in.split(":");
+        let hour_str = hour_arr[0];
+        hour_out = parseInt(hour_str);
+    }
+    return hour_out;
+}
+
 // Function to get a week number (DEPRECATED)
 function get_week_number(date) {
     let first_day = new Date(date.getFullYear(), 0, 1);
@@ -159,6 +192,9 @@ export {
     ISO8601_week_no,
     change_current_date,
     get_week_by_day,
+    get_this_month,
+    get_this_year,
+    get_hour_as_number,
     correct_day_of_week,
     get_time_of_day_label,
     get_week_number,

@@ -62,7 +62,7 @@ const UpcomingShifts = (props) => {
                             <p>Apply for work by adding shifts to wishlist</p>
                         </div>
                         <button className="add_to_wishlist_btn btn mr-1 formBtn" onClick={() => { window.location.href="/shifts/create" }}>
-                            <i className="far fa-plus-square mr-2"></i><span>Add shifts to wishlist</span>
+                            <i className="fa fa-plus mr-2"></i><span>Add shifts to wishlist</span>
                         </button>
                     </div>
                 }

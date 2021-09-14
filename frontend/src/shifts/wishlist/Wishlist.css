@@ -1,3 +1,20 @@
+.wishlist_controller {
+    display: flex;
+    align-items: center;
+    margin: 1rem;
+    justify-content: space-between;
+}
+.wishlist_btn {
+    line-height: 1rem;
+}
+.sort_by select {
+    margin-left: 0.5rem;
+    border-radius: 10px;
+    text-align: center;
+}
+.sort_by label {
+    margin-bottom: 0;
+}
 .table td {
     padding-left: 0.2rem;
     padding-right: 0.2rem;
@@ -14,10 +31,16 @@
     color: #274B7D;
     line-height: 1.5rem;
 }
-.wishlist_pedning {
+.wishlist_actions button {
+    border: none;
+    background-color: transparent;
+    color: #274B7D;
+}
+.wishlist_pending {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
     text-align: center;
-    padding: 0.4rem 0 0.4rem 0;
+    padding: 0.3rem 0 0.3rem 0;
+    line-height: 1.5rem;
 }

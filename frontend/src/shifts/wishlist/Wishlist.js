@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { get_local_user_data, sort_by_date } from '../../shared/functions/General';
+import { get_local_user_data, sort_by_date, get_local_user_token } from '../../shared/functions/General';
 import { to_standard_date } from '../../shared/functions/FormatDate';
 import { get_ip, device_type } from '../../shared/components/localhost';
 import { useForm } from "react-hook-form";
@@ -42,6 +42,44 @@ const Wishlist = () => {
 
     }, [])
 
+    const delete_shift = async (props) => {
+        let token = get_local_user_token();
+        if (token) {
+            let myHeaders = new Headers();
+            myHeaders.append("Authorization", `Bearer ${token}`);
+
+            let requestOptionsDelete = {
+                method: 'DELETE',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+
+            let status_code;
+            await fetch(`http://${get_ip(device_type)}:9000/shifts/delete/${props}`, requestOptionsDelete)
+            .then(response => {
+                status_code = response.status;
+                return response.json()
+            })
+            .then(result => {
+                if (status_code === 200) {
+                    console.log(result);
+                    alert('Deleted successfully!');
+                    if (props.type === 'quick') {
+                        // history.push("/");
+                        window.location.href="/calendar"
+                    } else {
+                        window.location.href="/timesheet"
+                        // history.push("/users/employees");
+                    }
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+                alert('Deleted failed!');
+            });
+        }
+    }
+
     // useForm() hook
     const { register } = useForm();
 
@@ -50,8 +88,6 @@ const Wishlist = () => {
     const handleChange = (e) => {
         setSortingValue(e.target.value);
     }
-
-    // const [displayShifts, setDisplayShifts] = useState([]);
 
     const display_shifts = () => {
         const sorted_shift_data = sort_by_date(shiftData);
@@ -88,12 +124,12 @@ const Wishlist = () => {
                 <td>{to_standard_date(shift.date)}</td>
                 <td>{shift.start_time}</td>
                 <td>{shift.end_time}</td>
-                <td><span className={`badge badge-pill ${(shift.status === 'accepted') ? 'badge-success' : 'badge-warning'}`}>{shift.status}</span></td>
+                <td><span className={`badge badge-pill ${(shift.status === 'accepted') ? 'badge-primary' : 'badge-warning'}`}>{shift.status}</span></td>
                 <td className="wishlist_actions">{(shift.status === 'pending') ? 
-                    <div className="wishlist_pedning">
-                        <Link to={`/shifts/${shift._id}`}><i className="fas fa-trash-alt"></i></Link>
+                    <div className="wishlist_pending">
+                        <button onClick={() => { delete_shift(`${shift._id}`) }}><i className="fas fa-trash-alt"></i></button>
                         <Link to={`/shifts/${shift._id}`}><i className="fas fa-edit"></i></Link>
-                    </div> : <Link to={`/shifts/${shift._id}`}><i className="fas fa-trash-alt"></i></Link> }
+                    </div> : <button onClick={() => { delete_shift(`${shift._id}`) }}><i className="fas fa-trash-alt"></i></button> }
                 </td>
             </tr>
             display_elements.push(el);
@@ -101,8 +137,11 @@ const Wishlist = () => {
     } 
     
     return <div className="wishlist_wrapper">  
-        <div className="sort_by">
-            <form>
+        <div className="wishlist_controller">
+            <button className="wishlist_btn btn mr-1 formBtn" onClick={() => { window.location.href="/shifts/create" }}>
+                <i className="fa fa-plus mr-2"></i><span>New</span>
+            </button>
+            <form className="sort_by">
                 <label>Sorted by:</label>
                 <select name="sorted_by" {...register('sorted_by')} defaultValue={"by_date"} onChange={handleChange}>
                     <option value="by_date">Date</option>

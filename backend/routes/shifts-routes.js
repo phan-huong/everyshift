@@ -51,6 +51,6 @@ router.patch('/:sid',
     shiftsControllers.updateShiftById
 );
 
-router.delete('/:sid', shiftsControllers.deleteShiftById);
+router.delete('/delete/:sid', shiftsControllers.deleteShiftById);
 
 module.exports = router;

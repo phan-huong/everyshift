@@ -156,7 +156,7 @@ const ShiftForm = (props) => {
             };
 
             let status_code;
-            await fetch(`http://${get_ip(device_type)}:9000/shifts/${shift_data._id}`, requestOptionsDelete)
+            await fetch(`http://${get_ip(device_type)}:9000/shifts/delete/${shift_data._id}`, requestOptionsDelete)
             .then(response => {
                 status_code = response.status;
                 return response.json()
