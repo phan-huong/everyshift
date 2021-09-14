@@ -47,7 +47,7 @@ const WeekCalendar = () => {
                 redirect: 'follow'
             };
             
-            if (userData.role == 'manager') {
+            if (userData.role === 'manager') {
                 fetch_shifts(`http://${get_ip(device_type)}:9000/shifts`, requestOptions)
             } else {
                 fetch_shifts(`http://${get_ip(device_type)}:9000/shifts/${userData._id}`, requestOptions)

@@ -64,7 +64,7 @@ const ShiftItem = (props) => {
             // console.log(props.data)
             return (
                 <a 
-                    href={props.data.status !== 'done' ? `/shifts/${props.data._id}` : "javascript:void(0)"} 
+                    href={props.data.status !== 'done' ? `/shifts/${props.data._id}` : "#"} 
                     className={`list-group-item list-group-item-action list-group-item-${set_status_color(props.data.status)}`}
                 >
                     <div>

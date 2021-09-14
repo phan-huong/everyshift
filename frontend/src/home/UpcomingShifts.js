@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { get_local_user_data, sort_by_date } from '../shared/functions/General';
+import { get_local_user_data, get_local_user_token, sort_by_date } from '../shared/functions/General';
 import { to_standard_date, compare_date_standard } from '../shared/functions/FormatDate';
 import { get_ip, device_type } from '../shared/components/localhost';
 
@@ -8,8 +8,6 @@ import './UpcomingShifts.css';
 
 const UpcomingShifts = (props) => {
     const [shiftData, setShiftData] = useState([]);
-    const localUser = get_local_user_data();
-    const user_id = localUser._id;
 
     const get_upcomming_shifts = (shift_data, max_shifts) => {
         let final_shifts = [];
@@ -72,30 +70,33 @@ const UpcomingShifts = (props) => {
 
     useEffect(() => {
         const fetch_shift_today = async () => {
-            console.log("Chay cai nay...")
-            let token = localStorage.getItem("logged_in_token");
-            let myHeaders = new Headers();
-            myHeaders.append("Authorization", `Bearer ${token}`);
-            let requestOptions = {
-                method: 'GET',
-                headers: myHeaders,
-                redirect: 'follow'
-            };
-    
-            let status_code;
-            await fetch(`http://${get_ip(device_type)}:9000/shifts/${user_id}`, requestOptions)
-            .then(response => {
-                status_code = response.status;
-                console.log(response);
-                return response.json()
-            })
-            .then(result => {
-                if (status_code === 200) {
-                    console.log(result);
-                    setShiftData(result.shifts);
-                }
-            })
-            .catch(error => console.log('error', error));
+            const localUser = get_local_user_data();
+            const user_id = localUser._id;
+            let token = get_local_user_token();
+            if (token) {
+                let myHeaders = new Headers();
+                myHeaders.append("Authorization", `Bearer ${token}`);
+                let requestOptions = {
+                    method: 'GET',
+                    headers: myHeaders,
+                    redirect: 'follow'
+                };
+        
+                let status_code;
+                await fetch(`http://${get_ip(device_type)}:9000/shifts/${user_id}`, requestOptions)
+                .then(response => {
+                    status_code = response.status;
+                    // console.log(response);
+                    return response.json()
+                })
+                .then(result => {
+                    if (status_code === 200) {
+                        // console.log(result);
+                        setShiftData(result.shifts);
+                    }
+                })
+                .catch(error => console.log('error', error));
+            }
         }
 
         fetch_shift_today();

@@ -14,6 +14,22 @@
     cursor: pointer;
   }
 
+  .navbar_icon {
+    font-size: 1.6rem;
+    color: white;
+    margin-right: 1rem;
+    cursor: pointer;
+    -webkit-transition: -webkit-transform .5s ease-in-out;
+    -ms-transition: -ms-transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;  
+  }
+
+  .navbar_icon:hover {
+    transform:rotate(90deg);
+    -ms-transform:rotate(90deg);
+    -webkit-transform:rotate(90deg);
+  }
+
 .headerUsername {
   color: white;
   font-size: 1.3rem;

@@ -144,7 +144,7 @@ function get_week_by_day(date_in) {
 
 // Function to get correct day of week (0 as Monday,..., 6 as Sunday)
 function correct_day_of_week(old_day) {
-    let new_day = old_day == 0 ? 6 : old_day - 1;
+    let new_day = old_day === 0 ? 6 : old_day - 1;
     return new_day;
 }
 

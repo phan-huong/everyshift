@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
-import { get_local_user_data } from './shared/functions/General';
+import { get_local_user_data, update_local_user_data, get_local_user_token } from './shared/functions/General';
 import NavHeader from './shared/components/Navigation/NavHeader';
 import NavFooter from './shared/components/Navigation/NavFooter';
 import { get_ip, device_type } from './shared/components/localhost';
@@ -15,13 +15,12 @@ import ShiftDetails from './shifts/pages/ShiftDetails';
 import Home from './home/Home';
 
 const Main = (props) => {
-    const [localUser, setLocalUser] = useState(get_local_user_data())
-
     useEffect(() => {
         // console.log("Getting user data...")
         const fetch_user_profile = async () => {
-            let token = localStorage.getItem("logged_in_token");
-            if (token && localUser._id) {
+            let localUser = get_local_user_data();
+            let token = get_local_user_token();
+            if (token && localUser) {
                 var myHeaders = new Headers();
                 myHeaders.append("Authorization", `Bearer ${token}`);
                 var requestOptions = {
@@ -39,7 +38,8 @@ const Main = (props) => {
                 .then(result => {
                     if (status_code === 200) {
                         // console.log(result);
-                        setLocalUser(result.user_data);
+                        // setLocalUser(result.user_data);
+                        update_local_user_data(result.user_data);
                     }
                 })
                 .catch(error => console.log('error', error));

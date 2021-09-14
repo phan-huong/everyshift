@@ -55,7 +55,7 @@ const SideDrawer = () => {
                 <Link to="/signin" onClick={() => { closeDrawer(); user_logout(); }}>
                     <NavIcon icon={<i className="fas fa-sign-out-alt"></i>} text={"Sign out"}/>
                 </Link>
-                {/* <Link onClick={closeDrawer} to="#">Close</Link> */}
+                {/* <Link onClick={closeDrawer} to="#"><i class="far fa-times-circle"></i></Link> */}
             </div>
         </nav>
     </aside>

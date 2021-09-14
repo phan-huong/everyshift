@@ -80,10 +80,6 @@ const SignIn = () => {
                         <button type="submit" className="btn">Go!</button>
                     </div>
                 </form>
-                <div className="signInLink">
-                    <p><Link to="/">Forgot your username?</Link></p>
-                    <p><Link to="/">Forgot your password?</Link></p>
-                </div>
                 <div className="signinLogo">
                     <p>EveryShift</p>
                 </div>

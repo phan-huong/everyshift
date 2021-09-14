@@ -19,7 +19,7 @@ const SingleDayShifts = (props) => {
             for (const week_date of props.current_week) {
                 let day_of_week = correct_day_of_week(week_date.getDay());
 
-                if (compare_date_standard(shift_date, week_date) && day_of_week == props.current_day) {
+                if (compare_date_standard(shift_date, week_date) && day_of_week === props.current_day) {
                     filtered_shifts.push(shift);
                     break;
                 }

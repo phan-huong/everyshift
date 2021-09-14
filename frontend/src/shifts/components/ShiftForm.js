@@ -3,14 +3,14 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { to_raw_date } from '../../shared/functions/FormatDate';
-import { isEmptyObject, get_local_user_token, get_local_user_data, update_local_user_data, check_if_manager } from '../../shared/functions/General';
+import { isEmptyObject, get_local_user_token, get_local_user_data, check_if_manager } from '../../shared/functions/General';
 import { get_ip, device_type } from '../../shared/components/localhost';
 
 const ShiftForm = (props) => {
-    const [localUser, setLocalUser] = useState(get_local_user_data());
+    // Prepare data
+    const localUser = get_local_user_data();
     const [employeeList, setEmployeeList] = useState([]);
 
-    // Prepare data
     const shift_data = props.data;
     const worker = isEmptyObject(shift_data) ? localUser._id : shift_data.worker._id || shift_data.worker || localUser._id;
     const shift_date = to_raw_date(shift_data.date);
@@ -42,7 +42,7 @@ const ShiftForm = (props) => {
     const formOptions = { resolver: yupResolver(validationSchema) };
 
     // useForm() hook
-    const { register, handleSubmit, reset, formState, setValue } = useForm(formOptions);
+    const { register, handleSubmit, reset, formState } = useForm(formOptions);
     const { errors } = formState;
 
     const onSubmit = (data) => {
