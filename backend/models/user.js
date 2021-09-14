@@ -88,7 +88,17 @@ const userSchema = new Schema({
         type: String,
         required: false,
         default: "#FFFFFF"
-    }
+    },
+    daysOffCount: {
+        type: Number,
+        required: false,
+        default: 0
+    },
+    daysOff: 
+    [{ 
+        type: Date, 
+        required: false
+    }]
 });
 
 userSchema.plugin(uniqueValidator);

@@ -56,7 +56,7 @@ const getUserByID = async (req, res, next) => {
 
     let user;
     try {
-        user = await User.findById(user_id);
+        user = await User.findById(user_id, '-password');
     } catch (err) {
         console.log(err);
         const error = new HttpError('Fetching user failed!', 500);
@@ -80,7 +80,7 @@ const updateUser = async (req, res, next) => {
         );
     }
     const user_id = req.params.id;
-    const { firstName, lastName, email, password, role, dateOfBirth, gender, phone, streetHouseNr, city, postalCode, state, country, salary, entryDate } = req.body;
+    const { firstName, lastName, email, password, role, dateOfBirth, gender, phone, streetHouseNr, city, postalCode, state, country, salary, entryDate, daysOffCount } = req.body;
     console.log(req.body);
 
     // Find user by ID
@@ -135,6 +135,7 @@ const updateUser = async (req, res, next) => {
     edited_user.country = country;
     edited_user.salary = salary;
     edited_user.entryDate = entryDate;
+    edited_user.daysOffCount = daysOffCount || 0;
 
     try {
         await edited_user.save();
@@ -155,7 +156,7 @@ const signup = async (req, res, next) => {
         );
     }
 
-    const { firstName, lastName, email, password, role, dateOfBirth, gender, phone, streetHouseNr, postalCode, city, state, country, salary, entryDate} = req.body;
+    const { firstName, lastName, email, password, role, dateOfBirth, gender, phone, streetHouseNr, postalCode, city, state, country, salary, entryDate, daysOffCount} = req.body;
 
     let existingUser
     try {
@@ -191,7 +192,8 @@ const signup = async (req, res, next) => {
         entryDate,
         image: 'https://image.flaticon.com/icons/png/512/860/860784.png',
         password: hashedPassword,
-        shifts: []
+        shifts: [],
+        daysOffCount
     });
 
     try {
@@ -260,13 +262,38 @@ const login = async (req, res, next) => {
         const error = new HttpError('Logging in failed!', 500);
         return next(error);
     }
-
+    
     res.json({   
         message: 'Logged in!',
         token: token,
         userData: existingUser
     });
 };
+
+// Create days-off
+// const createDaysOff = async (req, res, next) => {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//         return next(
+//             new HttpError('Invalid inputs, please check again!', 422)
+//         );
+//     }
+
+//     const { user_id, from_date, to_date} = req.body;
+
+//     // Find user by ID
+//     let user;
+//     try {
+//         user = await User.findById(user_id);
+//     } catch (err) {
+//         const error = new HttpError('User not found!', 500);
+//       return next(error);
+//     }
+    
+//     if (user) {
+
+//     }
+// };
 
 exports.getAllUsers = getAllUsers;
 exports.getAllEmployees = getAllEmployees;
