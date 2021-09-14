@@ -11,7 +11,7 @@ const UpcomingShifts = (props) => {
     const localUser = get_local_user_data();
     const user_id = localUser._id;
 
-    const get_upcomming_shifts = (shift_data) => {
+    const get_upcomming_shifts = (shift_data, max_shifts) => {
         let final_shifts = [];
         let sorted_shift_data = sort_by_date(shift_data);
         let today_obj = { today: true, date: new Date() };
@@ -24,7 +24,7 @@ const UpcomingShifts = (props) => {
             if (sorted_tempo[0].hasOwnProperty("today") && 
                 !compare_date_standard(new Date(sorted_tempo[0].date), new Date(sorted_tempo[1].date))) {
                 let difference = sorted_shift_data.length - index;
-                let max_loop = difference >= 0 && difference <= 5 ? sorted_shift_data.length : index + 5;
+                let max_loop = difference >= 0 && difference <= max_shifts ? sorted_shift_data.length : index + max_shifts;
 
                 for (let final_index = index; final_index < max_loop; final_index++) {
                     let final_shift = sorted_shift_data[final_index];
@@ -38,7 +38,7 @@ const UpcomingShifts = (props) => {
     }
 
     const NextShifts = (props) => {
-        let upcomingShifts = get_upcomming_shifts(props.data);
+        let upcomingShifts = get_upcomming_shifts(props.data, 5);
 
         return (
             <>
