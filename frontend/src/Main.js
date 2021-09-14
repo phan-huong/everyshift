@@ -12,6 +12,7 @@ import UserProfile from './users/pages/UserProfile';
 import Calendar from './calendar/pages/Calendar';
 import Timesheet from './shifts/pages/Timesheet';
 import ShiftDetails from './shifts/pages/ShiftDetails';
+import DaysOff from './daysoff/pages/DaysOff';
 import Home from './home/Home';
 
 const Main = (props) => {
@@ -62,6 +63,7 @@ const Main = (props) => {
                     <Route exact path="/users/create" component={UserProfile} />
                     <Route exact path="/calendar" component={Calendar} />
                     <Route exact path="/timesheet" component={Timesheet} />
+                    <Route exact path="/daysoff" component={DaysOff} />
                     <Route exact path="/shifts/:id" component={ShiftDetails} />
                     <Route exact path="/shifts/create" component={ShiftDetails} />
                 </Switch>

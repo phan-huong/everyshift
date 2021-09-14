@@ -9,6 +9,7 @@ const usersController = require('../controllers/users-controllers');
 // User login
 router.post('/login', usersController.login);
 
+// Check authorization
 router.use(checkAuth);
 
 // Get all users
