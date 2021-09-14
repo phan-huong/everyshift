@@ -8,26 +8,29 @@ import './NavBar.css';
 
 const NavHeader = props => {
     const [username, setUsername] = useState("Username");
-    // const [userImageURL, setUserImageURL] = useState(`${process.env.PUBLIC_URL}/icons/user.png`);
-    const [openDrawerState, setOpenDrawerState] = useState(false);
+    const [drawerVisible, setdrawerVisible] = useState(false);
+    var sideDrawerOpenClass = "drawerOpen";
+    var rotateClass = "navbar_rotate";
 
     const openDrawer = (event) => {
         event.preventDefault();
-        setOpenDrawerState(!openDrawerState)
-        const sideDrawerOpenClass = "drawerOpen";
-
-        if (openDrawerState) {
-            document.getElementById("sideDrawer").classList.remove(sideDrawerOpenClass);
-        } else {
-            document.getElementById("sideDrawer").classList.add(sideDrawerOpenClass);
-        }
+        setdrawerVisible(!drawerVisible);
     }
 
     useEffect(() => {
+        window.addEventListener('mouseup',function(event){
+            var sideDrawer = document.getElementById('sideDrawer');
+            var navBtn = document.getElementById("userNavBtn");
+            var navBtn_i = document.getElementById("userNavBtn_i");
+            if (sideDrawer && event.target !== sideDrawer && event.target.parentNode !== sideDrawer
+                && event.target !== navBtn && event.target !== navBtn_i){
+                setdrawerVisible(false);
+            }
+        });
+
         if (localStorage.getItem("userData")) {
             let userData = JSON.parse(localStorage.getItem("userData"));
             setUsername(userData.name ? userData.name : `${userData.firstName} ${userData.lastName}`);
-            // setUserImageURL(userData.image);
         }
     }, [])
     
@@ -35,17 +38,14 @@ const NavHeader = props => {
         <header>
             <MainHeader>
                 <div className="headerUserContainer">
-                    <div>
-                        <Link id="userNavBtn" className="userNavBtn" onClick={(e) => openDrawer(e)} to="#">
-                            {/* <img src={userImageURL} alt="User Icon" /> */}
-                            <i className="fa fa-bars" aria-hidden="true"></i>
-                        </Link>
-                    </div>
-                    <p className="headerUsername">{username}</p>
+                    <Link id="userNavBtn" className="userNavBtn" onClick={(e) => openDrawer(e)} to="#">
+                        <i id="userNavBtn_i" className={`fa fa-bars navbar_icon ${ drawerVisible ? rotateClass : '' }`} aria-hidden="true"></i>
+                    </Link>
+                    <span className="headerUsername">{username}</span>
                 </div>
                 <DateToday />
             </MainHeader>
-            <SideDrawer />
+            <SideDrawer visible={drawerVisible} visible_class={sideDrawerOpenClass} />
         </header>
     )
 };
