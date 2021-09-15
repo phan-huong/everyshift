@@ -92,7 +92,7 @@ const userSchema = new Schema({
     daysOffCount: {
         type: Number,
         required: false,
-        default: 0
+        default: 24
     },
     daysOff: 
     [{ 

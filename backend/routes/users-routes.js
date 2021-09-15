@@ -32,6 +32,23 @@ router.patch('/:id',
   usersController.updateUser
 );
 
+// Create days-off by user ID
+router.patch('/:id/daysoff/create', 
+  [
+    check('from_date').not().isEmpty()
+  ],
+  usersController.createDaysOffByUserID
+);
+
+// Delete days-off by user ID
+router.patch('/:id/daysoff/delete', 
+  [
+    check('dates').not().isEmpty()
+  ],
+  usersController.deleteDaysOffByUserID
+);
+
+
 // Create a user
 router.post('/signup',
   [
@@ -55,5 +72,6 @@ router.post('/signup',
   ],
   usersController.signup
 );
+
 
 module.exports = router;

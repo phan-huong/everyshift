@@ -1,3 +1,24 @@
+.daysoff_page {
+    height: 100%;
+    overflow: hidden;
+}
 .daysoff_wrapper {
-    margin: 1rem 2rem;
+    height: 100%;
+    display: grid;
+    padding: 0 2rem;
+}
+.daysoff_wrapper > .title_section {
+    font-size: 1.4rem;
+}
+.daysoff_wrapper > .main_content {
+    height: 100%;
+    /* display: grid; */
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.daysoff_wrapper > .add_days_off_section {
+    padding-top: 0.5rem;
+}
+.daysoff_wrapper > .add_days_off_section > button {
+    width: 100%;
 }
