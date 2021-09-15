@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { to_raw_date } from '../../shared/functions/FormatDate';
+import { to_raw_date, compare_date_standard } from '../../shared/functions/FormatDate';
 import { isEmptyObject, get_local_user_token, get_local_user_data, check_if_manager } from '../../shared/functions/General';
 import { get_ip, device_type } from '../../shared/components/localhost';
 
@@ -46,6 +46,51 @@ const ShiftForm = (props) => {
     const { errors } = formState;
 
     const onSubmit = (data) => {
+        const check_if_days_off = async (shift_date, worker_id) => {
+            let is_days_off = false;
+            let token = get_local_user_token();
+            // let userData = {}
+            if (token) {
+                var myHeaders = new Headers();
+                myHeaders.append("Authorization", `Bearer ${token}`);
+
+                let requestOptions = {
+                    method: 'GET',
+                    headers: myHeaders,
+                    redirect: 'follow'
+                };
+        
+                let status_code;
+                await fetch(`http://${get_ip(device_type)}:9000/users/${worker_id}`, requestOptions)
+                .then(response => {
+                    status_code = response.status;
+                    return response.json()
+                })
+                .then(result => {
+                    if (status_code === 200) {
+                        if (result.user_data.daysOff.length > 0) {
+                            let input_date = new Date(shift_date);
+                            console.log("===> input_date: " + input_date);
+                            for (const daysoff of result.user_data.daysOff) {
+                                let user_daysoff = new Date(daysoff);
+                                if (compare_date_standard(input_date, user_daysoff)) {
+                                    console.log("===> user_daysoff: " + user_daysoff);
+                                    is_days_off = true
+                                    break;
+                                }
+                            }
+
+                            if (!is_days_off) {update_shift_by_id(data)}
+                            else { alert('Cannot have a shift on vacation day. Please choose another date!') }
+                        } else {
+                            update_shift_by_id(data)
+                        }
+                    }
+                })
+                .catch(error => console.log('error', error));
+            }
+        }
+
         const update_shift_by_id = async (data) => {
             let token = get_local_user_token();
             if (token) {
@@ -63,8 +108,8 @@ const ShiftForm = (props) => {
                     status: data.status || status,
                     worker: data.worker || worker
                 }
+                // console.log(final_data);
 
-                console.log(final_data);
                 var raw = JSON.stringify(final_data);
 
                 if (!isEmptyObject(shift_data)) {   // update shift
@@ -90,11 +135,9 @@ const ShiftForm = (props) => {
                                 console.log(result);
                                 // alert('Updated successfully!');
                                 if (props.type === 'quick') {
-                                    // history.push("/");
                                     window.location.href="/calendar"
                                 } else {
                                     window.location.href="/timesheet"
-                                    // history.push("/users/employees");
                                 }
                             }
                         })
@@ -124,11 +167,9 @@ const ShiftForm = (props) => {
                             console.log(result);
                             // alert('Created successfully!');
                             if (props.type === 'quick') {
-                                // history.push("/");
                                 window.location.href="/calendar"
                             } else {
                                 window.location.href="/timesheet"
-                                // history.push("/users/employees");
                             }
                         }
                     })
@@ -140,7 +181,8 @@ const ShiftForm = (props) => {
             }
         }
 
-        update_shift_by_id(data);
+        // update_shift_by_id(data);
+        check_if_days_off(data.shift_date, data.worker || worker)
     }
 
     const delete_shift = async () => {
@@ -172,6 +214,10 @@ const ShiftForm = (props) => {
                         window.location.href="/timesheet"
                         // history.push("/users/employees");
                     }
+                }
+
+                if (status_code === 500) {
+                    alert(result.message)
                 }
             })
             .catch(error => {
