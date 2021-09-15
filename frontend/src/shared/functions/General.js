@@ -18,10 +18,19 @@ function check_if_manager(userData) {
     return userData.role === 'manager' ? true : false;
 }
 
-function sort_by_date (arr) {
+function sort_by_date(arr) {
     arr.sort(function(a, b) {
         var c = new Date(a.date);
         var d = new Date(b.date);
+        return c-d;
+    });
+    return arr;
+}
+
+function sort_by_date_from_db(arr) {
+    arr.sort(function(a, b) {
+        var c = new Date(a);
+        var d = new Date(b);
         return c-d;
     });
     return arr;
@@ -55,5 +64,6 @@ export {
     update_local_user_data,
     check_if_manager,
     sort_by_date,
+    sort_by_date_from_db,
     get_short_name
 }

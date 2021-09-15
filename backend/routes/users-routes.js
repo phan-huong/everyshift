@@ -48,7 +48,6 @@ router.patch('/:id/daysoff/delete',
   usersController.deleteDaysOffByUserID
 );
 
-
 // Create a user
 router.post('/signup',
   [

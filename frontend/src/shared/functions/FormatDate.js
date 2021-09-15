@@ -60,6 +60,11 @@ function get_this_year(date_in) {
     return date_out;
 }
 
+function get_this_year_only() {
+    let today = new Date();
+    return today.getFullYear();
+}
+
 // Function to get Hour as number
 function get_hour_as_number(time_in) {
     let hour_out;
@@ -201,5 +206,6 @@ export {
     to_standard_date,
     compare_date_standard,
     get_localstorage_current_date,
-    set_localstorage_current_date
+    set_localstorage_current_date,
+    get_this_year_only
 }

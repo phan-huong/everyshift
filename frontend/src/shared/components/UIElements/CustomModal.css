@@ -13,7 +13,8 @@
 .custom_modal_wrapper {
     background-color: #274B7D;
     width: 90%;
-    height: 90%;
+    height: auto;
+    max-height: 90%;
     padding: 1rem;
     color: white;
     display: flex;

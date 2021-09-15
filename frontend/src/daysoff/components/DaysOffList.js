@@ -1,42 +1,83 @@
 import React, { useState } from "react";
-import { get_local_user_data, sort_by_date } from '../../shared/functions/General';
+import { sort_by_date_from_db } from '../../shared/functions/General';
+import { to_standard_date, get_this_year_only } from "../../shared/functions/FormatDate";
 
 const DaysOffList = (props) => {
-    const get_days_from_range = (from_date, to_date) => {
-        let difference_in_milliseconds = to_date.getTime() - from_date.getTime();
-        let difference_in_days = difference_in_milliseconds / (1000 * 60 * 60 * 24);
-
-        let output = [];
-        for (let index = 0; index <= difference_in_days; index++) {
-            let next_date = new Date(from_date.getFullYear(), from_date.getMonth(), from_date.getDate() + index);
-            output.push(next_date);
-        }
-        return output;
-    }
-
     const filter_daysoff = () => {
-        let localUser = get_local_user_data();
-        let count = localUser.daysOffCount || 0;
-        let list = localUser.daysOff || [];
-        let sorted_list = sort_by_date(list);
+        let userData = props.userData;
+        let count = userData.daysOffCount || 24;
+        let list = userData.daysOff || [];
+        let sorted_list = sort_by_date_from_db(list);
 
-        return { count: localUser.daysOffCount, list: localUser.daysOff };
+        function get_years(dates_list) {
+            let years = [];
+            let tempo_year = 0;
+            for (const date_str of dates_list) {
+                let new_date = new Date(date_str);
+                let new_year = new_date.getFullYear();
+                if (!years.includes(new_year)) {
+                    years.push(new_year)
+                }
+            }
+
+            // console.log(years);
+            return years;
+        }
+
+        return { 
+            count: count, 
+            years: get_years(sorted_list), 
+            list: sorted_list
+        };
     }
-    const [daysOffList, setDaysOffList] = useState(filter_daysoff());
+    // const [daysOffData, setDaysOffData] = useState(filter_daysoff());
+    const daysOffData = filter_daysoff();
 
     return (
         <>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
+            <ul id="year_accordion" className="year_list list-group border">
+                {
+                    daysOffData.years.length > 0 ? 
+                    daysOffData.years.map((year, y_index) => {
+                        return(
+                            <li className="year_item" key={`year_${y_index}`}>
+                                <a href={`#year_item_${y_index}`} 
+                                    className="year_item_link list-group-item list-group-item-action list-group-item-primary" 
+                                    data-toggle="collapse"
+                                >
+                                    <span className="title">{`Days-off in ${year}`}</span>
+                                    <i className="icon fa fa-chevron-down arrow_rotate"></i>
+                                </a>
+                                <div id={`year_item_${y_index}`} className={`collapse ${get_this_year_only() === year ? 'show' : ''}`} data-parent="#year_accordion">
+                                    <div className="card-body">
+                                        { 
+                                            daysOffData.list.length > 0 ?
+                                            daysOffData.list.map((daysoff, d_index) => {
+                                                let new_date = new Date(daysoff);
+                                                let pretty_date = to_standard_date(daysoff);
+                                                let base_year = new_date.getFullYear();
+                                                // let base_month = new_date.getMonth();
+                                                // let base_date = new_date.getDate()
 
-            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.   
+                                                if (base_year !== year) return null;
 
-            Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.   
-
-            Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.   
-
-            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.   
-
-            At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, At accusam aliquyam diam diam dolore dolores duo eirmod eos erat, et nonumy sed tempor et et invidunt justo labore Stet clita ea et gubergren, kasd magna no rebum. sanctus sea sed takimata ut vero voluptua. est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
+                                                return (
+                                                    <div className="input-group mb-1" key={`daysoff_group_${d_index}`}>
+                                                        <input type="text" className="form-control shadow-none" value={pretty_date} readOnly={true} />
+                                                        <div className="input-group-append">
+                                                            <button className="btn btn-danger shadow-none" type="button" id="button-addon2"><i className="fa fa-times" aria-hidden="true"></i></button>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }) : null
+                                        }
+                                    </div>
+                                </div>
+                            </li>
+                        )
+                    }) : null
+                }
+            </ul>
         </>
     )
 }

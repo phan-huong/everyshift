@@ -270,7 +270,6 @@ const login = async (req, res, next) => {
     });
 };
 
-
 // Create days-off by user ID
 const createDaysOffByUserID = async (req, res, next) => {
     function get_number_of_daysoff_by_year(daysoff, year) {
@@ -326,6 +325,11 @@ const createDaysOffByUserID = async (req, res, next) => {
         return false;
     }
 
+    // function simple_compare_date(from_date, to_date) {
+    //     let difference_in_milliseconds = to_date.valueOf() - from_date.valueOf();
+    //     return difference_in_milliseconds > 0 ? true : false;
+    // }
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return next(
@@ -350,22 +354,27 @@ const createDaysOffByUserID = async (req, res, next) => {
     let from_year_count = get_number_of_daysoff_by_year(edited_user.daysOff, from_year)
     if (to_date) {
         // console.log("===> Has to_date");
-        let to_year = parseInt(req.body.to_date.split("-")[2]);
-        if (from_year === to_date.getFullYear()) {
-            let input_days = get_dates_from_range(req.body.from_date, req.body.to_date);
-            
-            if (from_year_count + input_days.length <= edited_user.daysOffCount) {
-                for (const input_day of input_days) {
-                    if (!check_existing_date(edited_user.daysOff, input_day)) {
-                        edited_user.daysOff.push(input_day)
+        if (from_date < to_date) {
+            let to_year = parseInt(req.body.to_date.split("-")[2]);
+            if (from_year === to_date.getFullYear()) {
+                let input_days = get_dates_from_range(req.body.from_date, req.body.to_date);
+                
+                if (from_year_count + input_days.length <= edited_user.daysOffCount) {
+                    for (const input_day of input_days) {
+                        if (!check_existing_date(edited_user.daysOff, input_day)) {
+                            edited_user.daysOff.push(input_day)
+                        }
                     }
+                } else {
+                    const error = new HttpError(`You have selected more than ${edited_user.daysOffCount} days-off in the year ${from_year}!`, 500);
+                    return next(error);
                 }
             } else {
-                const error = new HttpError(`You have selected more than ${edited_user.daysOffCount} days-off in the year ${from_year}!`, 500);
+                const error = new HttpError('The selected dates are not in the same year!', 500);
                 return next(error);
             }
         } else {
-            const error = new HttpError('The selected dates are not in the same year!', 500);
+            const error = new HttpError('The "To date" must be greater than the "From date"!', 500);
             return next(error);
         }
     } else {

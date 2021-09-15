@@ -28,13 +28,16 @@ const CustomModal = (props) => {
                         {props.children}
                     </div>
                 </div>
-                <div className="custom_modal_footer">
-                    <div className="status"></div>
-                    <div className="buttons">
-                        { props.has_action_btn ? <button className="btn btn-success" onClick={() => { close_custom_modal(props.id) }}>Apply</button> : <></> }
-                        { props.has_close_btn ? <button className="btn btn-secondary" onClick={() => { close_custom_modal(props.id) }}>Close</button> : <></> }
-                    </div>
-                </div>
+                {
+                    props.has_footer ?
+                    <div className="custom_modal_footer">
+                        <div className="status"></div>
+                        <div className="buttons">
+                            { props.has_action_btn ? <button className="btn btn-success" onClick={() => { close_custom_modal(props.id); props.action_function() }}>Apply</button> : <></> }
+                            { props.has_close_btn ? <button className="btn btn-secondary" onClick={() => { close_custom_modal(props.id) }}>Close</button> : <></> }
+                        </div>
+                    </div> : <></>
+                }
             </div>
         </div>
     )
