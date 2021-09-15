@@ -293,21 +293,16 @@ const createDaysOffByUserID = async (req, res, next) => {
         let base_date = parseInt(splited_date[2]);
 
         let from_date = new Date(base_year, base_month === 0 ? base_month : base_month - 1, base_date);
-        console.log("===> from_date:" + from_date);
-
-        // console.log(`===> Base date: ${base_year}-${base_month}-${base_date}`);
+        // console.log("===> from_date:" + from_date);
 
         let output = [];
         for (let index = 0; index <= difference_in_days; index++) {
-            let new_month = base_month < 10 ? `0${base_month}` : base_month;
-            let new_date = base_date + index < 10 ? `0${base_date + index}` : base_date + index;
-            let date_from_user = `${base_year}-${new_month}-${new_date}`;
-            // console.log(`===> Date from user: ${date_from_user}`);
-
-            // let next_date = new Date(`${date_from_user}`);
+            // let new_month = base_month < 10 ? `0${base_month}` : base_month;
+            // let new_date = base_date + index < 10 ? `0${base_date + index}` : base_date + index;
+            // let date_from_user = `${base_year}-${new_month}-${new_date}`;
 
             let next_date = new Date(from_date.getFullYear(), from_date.getMonth(), from_date.getDate() + index, 0, 0, 0, 0);
-            console.log("===> next_date:" + next_date);
+            // console.log("===> next_date:" + next_date);
 
             output.push(next_date);
         }
@@ -315,9 +310,9 @@ const createDaysOffByUserID = async (req, res, next) => {
     }
 
     function check_existing_date(daysoff, input_date) {
-        console.log("===> input_date: " + input_date.getFullYear() + "-" + input_date.getMonth() + "-" + input_date.getDate());
+        // console.log("===> input_date: " + input_date.getFullYear() + "-" + input_date.getMonth() + "-" + input_date.getDate());
         for (const day of daysoff) {
-            console.log("===> daysoff: " + day.getFullYear() + "-" + day.getMonth() + "-" + day.getDate());
+            // console.log("===> daysoff: " + day.getFullYear() + "-" + day.getMonth() + "-" + day.getDate());
             if (day.getFullYear() === input_date.getFullYear() && day.getMonth() === input_date.getMonth() && day.getDate() === input_date.getDate()) {
                 return true;
             }
@@ -406,11 +401,11 @@ const createDaysOffByUserID = async (req, res, next) => {
 const deleteDaysOffByUserID = async (req, res, next) => {
     function check_existing_date(converted_dates, existed_date) {
         // console.log(existed_date);
-        console.log("=> existed_date: " + existed_date.getFullYear() + "-" + existed_date.getMonth() + "-" + existed_date.getDate());
+        // console.log("=> existed_date: " + existed_date.getFullYear() + "-" + existed_date.getMonth() + "-" + existed_date.getDate());
 
         for (const day of converted_dates) {
             // console.log(day)
-            console.log("=> converted_dates: " + day.getFullYear() + "-" + day.getMonth() + "-" + day.getDate());
+            // console.log("=> converted_dates: " + day.getFullYear() + "-" + day.getMonth() + "-" + day.getDate());
             if (day.getFullYear() === existed_date.getFullYear() && 
                 day.getMonth() === existed_date.getMonth() && 
                 day.getDate() === existed_date.getDate()) {
@@ -450,10 +445,10 @@ const deleteDaysOffByUserID = async (req, res, next) => {
     let new_dates = [];
     for (const existed_date of edited_user.daysOff) {
         if (!check_existing_date(converted_dates, existed_date)) {
-            console.log("yes");
+            // console.log("yes");
             new_dates.push(existed_date);
         } else {
-            console.log("no");
+            // console.log("no");
         }
     }
     edited_user.daysOff = new_dates;

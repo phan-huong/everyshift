@@ -28,7 +28,7 @@ const Daysoff = () => {
                 <div className="title_section">Your days-off</div>
                 
                 <div className="main_content">
-                    <DaysOffList userData={userData} />
+                    <DaysOffList userData={userData} update_userData={update_userData} />
                 </div>
                 
                 <div className="add_days_off_section">

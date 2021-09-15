@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { sort_by_date_from_db } from '../../shared/functions/General';
-import { to_standard_date, get_this_year_only } from "../../shared/functions/FormatDate";
+import { get_ip, device_type } from "../../shared/components/localhost";
+import { sort_by_date_from_db, get_local_user_token } from '../../shared/functions/General';
+import { to_standard_date, get_this_year_only, to_raw_date } from "../../shared/functions/FormatDate";
 
 const DaysOffList = (props) => {
     const filter_daysoff = () => {
@@ -30,8 +31,48 @@ const DaysOffList = (props) => {
             list: sorted_list
         };
     }
-    // const [daysOffData, setDaysOffData] = useState(filter_daysoff());
     const daysOffData = filter_daysoff();
+
+    const delete_daysoff = async (raw_date) => {
+        let token = get_local_user_token();
+        if (token) {
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", `Bearer ${token}`);
+            myHeaders.append("Content-Type", "application/json");
+
+            var raw = JSON.stringify({ "dates": [raw_date] });
+
+            var requestOptions = {
+                method: 'PATCH',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            let status_code;
+            await fetch(`http://${get_ip(device_type)}:9000/users/${props.userData._id}/daysoff/delete`, requestOptions)
+            .then(response => {
+                status_code = response.status;
+                // console.log(response);
+                return response.json()
+            })
+            .then(result => {
+                if (status_code === 200) {
+                    // console.log(result);
+                    alert('Deleted successfully!');
+                    props.update_userData(result.edited_user);
+                }
+
+                if (status_code === 500) {
+                    alert(result.message);
+                }
+            })
+            .catch(error => {
+                console.log('error', error);
+                alert('Deleted failed!');
+            });
+        }
+    }
 
     return (
         <>
@@ -54,7 +95,8 @@ const DaysOffList = (props) => {
                                             daysOffData.list.length > 0 ?
                                             daysOffData.list.map((daysoff, d_index) => {
                                                 let new_date = new Date(daysoff);
-                                                let pretty_date = to_standard_date(daysoff);
+                                                let pretty_date = to_standard_date(daysoff); // DD-MM-YYYY
+                                                let raw_date = to_raw_date(daysoff); // YYYY-MM-DD
                                                 let base_year = new_date.getFullYear();
                                                 // let base_month = new_date.getMonth();
                                                 // let base_date = new_date.getDate()
@@ -62,10 +104,12 @@ const DaysOffList = (props) => {
                                                 if (base_year !== year) return null;
 
                                                 return (
-                                                    <div className="input-group mb-1" key={`daysoff_group_${d_index}`}>
+                                                    <div className="input-group input-group-sm mb-1" key={`daysoff_group_${d_index}`}>
                                                         <input type="text" className="form-control shadow-none" value={pretty_date} readOnly={true} />
                                                         <div className="input-group-append">
-                                                            <button className="btn btn-danger shadow-none" type="button" id="button-addon2"><i className="fa fa-times" aria-hidden="true"></i></button>
+                                                            <button className="btn btn-outline-danger shadow-none" type="button" onClick={() => { delete_daysoff(raw_date) }}>
+                                                                <i className="fa fa-times"></i>
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 )

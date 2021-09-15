@@ -39,12 +39,12 @@ const AddDaysOff = (props) => {
                 await fetch(`http://${get_ip(device_type)}:9000/users/${props.userData._id}/daysoff/create`, requestOptions)
                 .then(response => {
                     status_code = response.status;
-                    console.log(response);
+                    // console.log(response);
                     return response.json()
                 })
                 .then(result => {
                     if (status_code === 200) {
-                        console.log(result);
+                        // console.log(result);
                         alert('Added successfully!');
                         props.update_userData(result.edited_user);
                     }
