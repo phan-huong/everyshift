@@ -119,7 +119,8 @@ const DaysOffList = (props) => {
                                 </div>
                             </li>
                         )
-                    }) : null
+                    })
+                    : <li class="list-group-item list-group-item-warning"><i class="fa fa-exclamation-circle"></i> No days-off found.</li>
                 }
             </ul>
         </>

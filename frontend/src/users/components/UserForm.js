@@ -28,6 +28,7 @@ const UserForm = (props) => {
     const country = user_data.country ? user_data.country : '';
     const salary = user_data.salary ? user_data.salary : '';
     const entryDate = to_raw_date(user_data.entryDate);
+    const daysOffCount = user_data.daysOffCount ? user_data.daysOffCount : 0;
     
     // form validation rules 
     const validationSchema = Yup.object().shape({
@@ -69,6 +70,7 @@ const UserForm = (props) => {
             })
             .matches(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/, 'Entry date must be a valid date in the format YYYY-MM-DD')
             .required('Entry Date is required'),
+        daysOffCount: Yup.number().positive().integer(),
         password: Yup.string().when('form_signup', {
             is: 1,
             then: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
@@ -262,10 +264,15 @@ const UserForm = (props) => {
                         <div className="invalid-feedback">{errors.salary?.message}</div>
                     </div>
                     <div>
-                        <label>Entry date</label>
-                        <input name="entryDate" type="date" {...register('entryDate')} className={`form-control ${errors.entryDate ? 'is-invalid' : ''}`} defaultValue={entryDate} />
-                        <div className="invalid-feedback">{errors.entryDate?.message}</div>
+                        <label>Days-off</label>
+                        <input name="daysOffCount" type="number" min={0} step={1} {...register('daysOffCount')} className={`form-control ${errors.daysOffCount ? 'is-invalid' : ''}`}  defaultValue={daysOffCount}/>
+                        <div className="invalid-feedback">{errors.daysOffCount?.message}</div>
                     </div>
+                </div>
+                <div>
+                    <label>Entry date</label>
+                    <input name="entryDate" type="date" {...register('entryDate')} className={`form-control ${errors.entryDate ? 'is-invalid' : ''}`} defaultValue={entryDate} />
+                    <div className="invalid-feedback">{errors.entryDate?.message}</div>
                 </div>
                 <div className={ localUser._id === user_data._id || isEmptyObject(user_data) ? '' : 'd-none' }>
                     <label>Password</label>
