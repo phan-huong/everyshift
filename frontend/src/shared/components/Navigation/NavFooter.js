@@ -48,7 +48,7 @@ const NavFooter = props => {
             }
             
             <OverlayTrigger placement='top' overlay={ <Tooltip id='tooltip-top'><strong>QR Code</strong></Tooltip> }>
-                <Link to="/qrcode" data-toggle="tooltip" className="navIcon">
+                <Link to="/qrcodeviewer" data-toggle="tooltip" className="navIcon">
                     <div><i className="fas fa-qrcode"></i></div>
                 </Link>
             </OverlayTrigger>

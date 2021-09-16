@@ -1,17 +1,12 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
-import { get_local_user_data, get_local_user_token, update_local_user_data } from '../../shared/functions/General';
-import { CustomModal, open_custom_modal, close_custom_modal } from '../../shared/components/UIElements/CustomModal';
+import { get_local_user_data, get_local_user_token } from '../../shared/functions/General';
 
 import './QRCodePage.css';
 
-const QRCodePage = () => {
+const QRCodeViewerPage = () => {
     const [qrCodeURL, setqrCodeURL] = useState();
     const userData = get_local_user_data();
-
-    const modal_action = () => {
-
-    }
 
     useEffect(() => {
         const get_qr_code = async () => {
@@ -44,7 +39,7 @@ const QRCodePage = () => {
                 <div className="buttons_section">
                     {
                         userData.role === 'manager' ? 
-                        <button className="btn formBtn" onClick={() => { modal_action() }}>
+                        <button className="btn formBtn" onClick={() => { window.location.href="/qrcodescanner" }}>
                             <i className="fa fa-qrcode mr-2"></i><span>Scan QR Code</span>
                         </button> : <span className="text-info font-italic">Let QR Code scanned to check-in to your shift.</span>
                     }
@@ -54,4 +49,4 @@ const QRCodePage = () => {
     )
 }
 
-export default QRCodePage;
+export default QRCodeViewerPage;

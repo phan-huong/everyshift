@@ -172,8 +172,30 @@ function make_pretty_time(time_in) {
     return time_in < 10 ? "0" + time_in : time_in;
 }
 
+// Convert a date to format HH:MM
+function to_raw_time(date) {
+    let hours = make_pretty_time(date.getHours())
+    let minutes = make_pretty_time(date.getMinutes());
+    return `${hours}:${minutes}`;
+}
+
 function compare_date_standard(date1, date2) {
     return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate()
+}
+
+function to_total_minutes_raw(time_str) {
+    let time_arr = time_str.split(":");
+    let hours = parseInt(time_arr[0]);
+    let minute = parseInt(time_arr[1]);
+    return hours * 60 + minute;
+}
+
+function is_time_in_range(input_time, start_time, end_time) {
+    let total_minutes_input = to_total_minutes_raw(input_time);
+    let total_minutes_start = to_total_minutes_raw(start_time);
+    let total_minutes_end = to_total_minutes_raw(end_time);
+
+    return total_minutes_input >= total_minutes_start && total_minutes_input <= total_minutes_end;
 }
 
 function get_localstorage_current_date() {
@@ -194,6 +216,8 @@ function set_localstorage_current_date(new_date) {
 export {
     CALENDAR,
     to_raw_date,
+    to_raw_time,
+    is_time_in_range,
     ISO8601_week_no,
     change_current_date,
     get_week_by_day,
