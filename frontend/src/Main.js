@@ -13,6 +13,7 @@ import Calendar from './calendar/pages/Calendar';
 import Timesheet from './shifts/pages/Timesheet';
 import ShiftDetails from './shifts/pages/ShiftDetails';
 import DaysOff from './daysoff/pages/DaysOff';
+import QRCodePage from './qrcode/pages/QRCodePage';
 import Home from './home/Home';
 
 const Main = (props) => {
@@ -66,6 +67,7 @@ const Main = (props) => {
                     <Route exact path="/daysoff" component={DaysOff} />
                     <Route exact path="/shifts/:id" component={ShiftDetails} />
                     <Route exact path="/shifts/create" component={ShiftDetails} />
+                    <Route exact path="/qrcode" component={QRCodePage} />
                 </Switch>
             </main>
             <NavFooter />
