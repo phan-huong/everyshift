@@ -38,20 +38,26 @@ const NavFooter = props => {
                 </Link>
             </OverlayTrigger>
 
-            {
+            {/* {
                 localUser.role === 'manager' ? 
                 <OverlayTrigger placement='top' overlay={ <Tooltip id='tooltip-top'><strong>Manage employees</strong></Tooltip> }>
                     <Link to="/users/employees" data-toggle="tooltip" className="navIcon">
                         <div><i className="fa fa-users"></i></div>
                     </Link>
                 </OverlayTrigger> : null
-            }
+            } */}
             
             <OverlayTrigger placement='top' overlay={ <Tooltip id='tooltip-top'><strong>QR Code</strong></Tooltip> }>
                 <Link to="/qrcodeviewer" data-toggle="tooltip" className="navIcon">
                     <div><i className="fas fa-qrcode"></i></div>
                 </Link>
             </OverlayTrigger>
+            
+            {/* <OverlayTrigger placement='top' overlay={ <Tooltip id='tooltip-top'><strong>About</strong></Tooltip> }>
+                <Link to="/about" data-toggle="tooltip" className="navIcon">
+                    <div><i className="fas fa-info-circle"></i></div>
+                </Link>
+            </OverlayTrigger> */}
         </MainFooter>
     )
 };

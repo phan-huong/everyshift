@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import QrReader from 'react-qr-reader';
 import { get_local_user_data, get_local_user_token } from '../../shared/functions/General';
 import { to_raw_date, to_raw_time, is_time_in_range, compare_date_standard } from '../../shared/functions/FormatDate';
 import { get_ip, device_type } from '../../shared/components/localhost';
-import { CustomModal, open_custom_modal, close_custom_modal } from '../../shared/components/UIElements/CustomModal';
 
 import './QRCodePage.css';
 
@@ -130,23 +129,6 @@ const QRCodeScannerPage = () => {
         alert("Unable to access the camera!")
         console.error(err);
     }
-
-    // useEffect(() => {
-        // const get_qr_code = async () => {
-        //     let token = get_local_user_token();
-        //     if (token) {
-        //         // https://www.npmjs.com/package/qrcode
-        //         try {
-        //             const image_data = await QRCode.toDataURL(userData._id, {version: 10});
-        //             // console.log(image_data)
-        //             setqrCodeURL(image_data);
-        //         } catch (error) {
-        //             console.log(error)
-        //         }
-        //     }
-        // }
-        // get_qr_code();
-    // }, [])
 
     return (
         <div className="qrcode_page">

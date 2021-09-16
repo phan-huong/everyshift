@@ -39,9 +39,9 @@ const SideDrawer = (props) => {
                         <NavIcon icon={<i className="fas fa-user-plus"></i>} text={"Create User"}/></Link> : <></> }
                     { userRole === "manager" ? <Link to="/users/employees" onClick={closeDrawer}>
                         <NavIcon icon={<i className="fas fa-users"></i>} text={"Manage Employees"}/></Link> : <></> }
-                    <Link to="/" onClick={closeDrawer}>
+                    {/* <Link to="/" onClick={closeDrawer}>
                         <NavIcon icon={<i className="fas fa-cogs"></i>} text={"Settings"}/>
-                    </Link>
+                    </Link> */}
                     <Link to="/about" onClick={closeDrawer}>
                         <NavIcon icon={<i className="fas fa-info-circle"></i>} text={"About"}/>
                     </Link>
