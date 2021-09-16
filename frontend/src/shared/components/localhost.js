@@ -14,6 +14,6 @@ const get_ip = (device_type) => {
     return ip;
 } ;
 
-const device_type = 'pc';
+const device_type = 'mobile';
 
 export { get_ip, device_type }
