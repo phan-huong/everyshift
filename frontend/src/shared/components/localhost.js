@@ -5,7 +5,7 @@ const get_ip = (device_type) => {
             ip = "127.0.0.1";   // localhost
             break;
         case 'mobile':
-            ip = "192.168.178.48";  // IP of your PC on the same network with your mobile phone
+            ip = "192.168.178.45";  // IP of your PC on the same network with your mobile phone
             break;
         default:
             ip = "10.0.2.2";    // localhost on Android simulator devices

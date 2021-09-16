@@ -332,7 +332,7 @@ const ShiftForm = (props) => {
                     >
                         <option value="pending">Pending</option>
                         <option value="accepted">Accepted</option>
-                        <option value="done">Done</option>
+                        {/* <option value="done">Done</option> */}
                     </select>
                     <div className="invalid-feedback">{errors.status?.message}</div>
                 </div>
