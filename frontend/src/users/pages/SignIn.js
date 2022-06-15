@@ -37,7 +37,7 @@ const SignIn = () => {
             redirect: 'follow'
         };
         
-        await fetch(`http:///${get_ip(device_type)}:9000/users/login`, requestOptions)
+        await fetch(`https://${get_ip(device_type)}/users/login`, requestOptions)
         .then(response => {
             console.log(response);
             if (response.status === 200) console.log('Success!'); else console.log('Failed!');

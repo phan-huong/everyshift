@@ -113,7 +113,7 @@ const UserForm = (props) => {
                     };
                     
                     let status_code;
-                    await fetch(`http://${get_ip(device_type)}:9000/users/${user_data._id}`, requestOptionsPatch)
+                    await fetch(`https://${get_ip(device_type)}/users/${user_data._id}`, requestOptionsPatch)
                     .then(response => {
                         status_code = response.status;
                         // console.log(response);
@@ -147,7 +147,7 @@ const UserForm = (props) => {
                     };
         
                     let status_code;
-                    await fetch(`http://${get_ip(device_type)}:9000/users/signup`, requestOptionsPost)
+                    await fetch(`https://${get_ip(device_type)}/users/signup`, requestOptionsPost)
                     .then(response => {
                         status_code = response.status;
                         // console.log(response);

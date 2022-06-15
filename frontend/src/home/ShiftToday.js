@@ -25,7 +25,7 @@ const ShiftToday = () => {
                 };
         
                 var status_code;
-                await fetch(`http://${get_ip(device_type)}:9000/shifts/${user_id}`, requestOptions)
+                await fetch(`https://${get_ip(device_type)}/shifts/${user_id}`, requestOptions)
                 .then(response => {
                     status_code = response.status;
                     return response.json()

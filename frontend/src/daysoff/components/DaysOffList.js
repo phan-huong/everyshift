@@ -50,7 +50,7 @@ const DaysOffList = (props) => {
             };
 
             let status_code;
-            await fetch(`http://${get_ip(device_type)}:9000/users/${props.userData._id}/daysoff/delete`, requestOptions)
+            await fetch(`https://${get_ip(device_type)}/users/${props.userData._id}/daysoff/delete`, requestOptions)
             .then(response => {
                 status_code = response.status;
                 // console.log(response);

@@ -8,7 +8,7 @@ const get_ip = (device_type) => {
             ip = "192.168.178.45";  // IP of your PC on the same network with your mobile phone
             break;
         case 'vps':
-            ip = "161.97.144.10";
+            ip = "devway.work";
             break;
         default:
             ip = "10.0.2.2";    // localhost on Android simulator devices

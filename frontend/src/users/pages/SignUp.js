@@ -75,7 +75,7 @@ const SignUp = () => {
             redirect: 'follow'
         };
 
-        await fetch(`http://${get_ip(device_type)}:9000/users/signup`, requestOptions)
+        await fetch(`https://${get_ip(device_type)}/users/signup`, requestOptions)
         .then(response => {
             console.log(response);
             if (response.status === 201) alert('Success!'); else alert('Failed!');
