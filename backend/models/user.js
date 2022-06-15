@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
-const localhost = require('../config/localhost');
+// const localhost = require('../config/localhost');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -67,7 +67,7 @@ const userSchema = new Schema({
     image: { 
         type: String, 
         required: false,
-        default: `http://${localhost.get_ip(localhost.device_type)}:3000/public/icons/user.png`
+        default: `/icons/person.png`
     },
     entryDate: {
         type: Date,
