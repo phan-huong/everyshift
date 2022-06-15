@@ -24,7 +24,7 @@ const ShiftDetails = (props) => {
                     };
             
                     var status_code;
-                    await fetch(`https://${get_ip(device_type)}/shifts/shift/${shift_id}`, requestOptions)
+                    await fetch(`${get_ip(device_type)}/shifts/shift/${shift_id}`, requestOptions)
                     .then(response => {
                         status_code = response.status;
                         return response.json()

@@ -33,7 +33,7 @@ const Main = (props) => {
                 };
         
                 var status_code;
-                await fetch(`https://${get_ip(device_type)}/users/${localUser._id}`, requestOptions)
+                await fetch(`${get_ip(device_type)}/users/${localUser._id}`, requestOptions)
                 .then(response => {
                     status_code = response.status;
                     return response.json()

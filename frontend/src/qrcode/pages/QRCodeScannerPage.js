@@ -36,7 +36,7 @@ const QRCodeScannerPage = () => {
             };
             
             let update_status_code;
-            await fetch(`https://${get_ip(device_type)}/shifts/${found_shift._id}`, requestOptionsPatch)
+            await fetch(`${get_ip(device_type)}/shifts/${found_shift._id}`, requestOptionsPatch)
             .then(response => {
                 update_status_code = response.status;
                 // console.log(response);
@@ -77,7 +77,7 @@ const QRCodeScannerPage = () => {
             
             // First get all shifts by user ID
             var status_code;
-            await fetch(`https://${get_ip(device_type)}/shifts/${user_id}`, requestOptionsGet)
+            await fetch(`${get_ip(device_type)}/shifts/${user_id}`, requestOptionsGet)
             .then(response => {
                 status_code = response.status;
                 return response.json()

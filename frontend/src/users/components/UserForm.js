@@ -10,7 +10,8 @@ import "bootstrap/dist/css/bootstrap.css";
 import './UserForm.css';
 
 const UserForm = (props) => {
-    const [localUser, setLocalUser] = useState(get_local_user_data())
+    const [localUser, setLocalUser] = useState(get_local_user_data());
+    const phoneRegEx = /^\+(?:[0-9] ?){6,14}[0-9]$/; // must have international area code (e.g. +49)
 
     // Prepare data
     const user_data = props.data;
@@ -50,7 +51,8 @@ const UserForm = (props) => {
         gender: Yup.string()
             .required('Gender is required'),
         phone: Yup.string()
-            .required('Phone is required'),
+            .required('Phone is required')
+            .matches(phoneRegEx, 'Phone must have international area code (e.g. +49) and 7-15 digits.'),
         streetHouseNr: Yup.string()
             .required('Adress is required'),
         postalCode: Yup.number().positive().integer()
@@ -113,7 +115,7 @@ const UserForm = (props) => {
                     };
                     
                     let status_code;
-                    await fetch(`https://${get_ip(device_type)}/users/${user_data._id}`, requestOptionsPatch)
+                    await fetch(`${get_ip(device_type)}/users/${user_data._id}`, requestOptionsPatch)
                     .then(response => {
                         status_code = response.status;
                         // console.log(response);
@@ -147,7 +149,7 @@ const UserForm = (props) => {
                     };
         
                     let status_code;
-                    await fetch(`https://${get_ip(device_type)}/users/signup`, requestOptionsPost)
+                    await fetch(`${get_ip(device_type)}/users/signup`, requestOptionsPost)
                     .then(response => {
                         status_code = response.status;
                         // console.log(response);
@@ -226,7 +228,7 @@ const UserForm = (props) => {
                 </div>
                 <div>
                     <label>Phone</label>
-                    <input name="phone" type="tel" placeholder="+49 12345678910" pattern="+[0-9]{2} [0-9]{11}" {...register('phone')} className={`form-control ${errors.phone ? 'is-invalid' : ''}`}  defaultValue={phone}/>
+                    <input name="phone" type="tel" placeholder="+49 12345678910" {...register('phone')} className={`form-control ${errors.phone ? 'is-invalid' : ''}`}  defaultValue={phone}/>
                     <div className="invalid-feedback">{errors.phone?.message}</div>
                 </div>
                 <p>Adress</p>

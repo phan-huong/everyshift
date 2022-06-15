@@ -10,9 +10,13 @@ const Users = () => {
     useEffect(() => {
         const fetch_all_users = async () => {
             let token = localStorage.getItem("logged_in_token");
+            let manager_id = localUser.id ? localUser.id : '';
+            // console.log(`===> Local user id new: ${manager_id}`);
+            
             if (token) {
                 var myHeaders = new Headers();
-                myHeaders.append("manager_id", localUser._id ? localUser._id : '');
+                // myHeaders.append("manager_id", localUser._id ? localUser._id : '');
+                myHeaders.append("manager_id", manager_id);
                 myHeaders.append("Authorization", `Bearer ${token}`);
 
                 var requestOptions = {
@@ -22,7 +26,7 @@ const Users = () => {
                 };
     
                 var status_code;
-                await fetch(`https://${get_ip(device_type)}/users/employees`, requestOptions)
+                await fetch(`${get_ip(device_type)}/users/employees`, requestOptions)
                 .then(response => {
                     status_code = response.status;
                     return response.json()

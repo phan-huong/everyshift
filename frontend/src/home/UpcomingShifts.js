@@ -83,7 +83,7 @@ const UpcomingShifts = (props) => {
                 };
         
                 let status_code;
-                await fetch(`https://${get_ip(device_type)}/shifts/${user_id}`, requestOptions)
+                await fetch(`${get_ip(device_type)}/shifts/${user_id}`, requestOptions)
                 .then(response => {
                     status_code = response.status;
                     // console.log(response);

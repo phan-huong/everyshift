@@ -9,12 +9,12 @@ const get_ip = (device_type) => {
             break;
         default:
             ip = "10.0.2.2";
-            break;
+            break;   
     }
     return ip;
 } ;
 
-const device_type = 'vps';
+const device_type = 'pc';
 
 exports.get_ip = get_ip;
 exports.device_type = device_type;

@@ -48,9 +48,9 @@ const WeekCalendar = () => {
             };
             
             if (userData.role === 'manager') {
-                fetch_shifts(`https://${get_ip(device_type)}/shifts`, requestOptions)
+                fetch_shifts(`${get_ip(device_type)}/shifts`, requestOptions)
             } else {
-                fetch_shifts(`https://${get_ip(device_type)}/shifts/${userData._id}`, requestOptions)
+                fetch_shifts(`${get_ip(device_type)}/shifts/${userData._id}`, requestOptions)
             }
         }
     }, [userDate])

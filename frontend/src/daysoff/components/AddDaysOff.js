@@ -36,7 +36,7 @@ const AddDaysOff = (props) => {
                 };
 
                 let status_code;
-                await fetch(`https://${get_ip(device_type)}/users/${props.userData._id}/daysoff/create`, requestOptions)
+                await fetch(`${get_ip(device_type)}/users/${props.userData._id}/daysoff/create`, requestOptions)
                 .then(response => {
                     status_code = response.status;
                     // console.log(response);

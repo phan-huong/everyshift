@@ -61,7 +61,7 @@ const ShiftForm = (props) => {
                 };
         
                 let status_code;
-                await fetch(`https://${get_ip(device_type)}/users/${worker_id}`, requestOptions)
+                await fetch(`${get_ip(device_type)}/users/${worker_id}`, requestOptions)
                 .then(response => {
                     status_code = response.status;
                     return response.json()
@@ -124,7 +124,7 @@ const ShiftForm = (props) => {
                         };
                         
                         let status_code;
-                        await fetch(`https://${get_ip(device_type)}/shifts/${shift_data._id}`, requestOptionsPatch)
+                        await fetch(`${get_ip(device_type)}/shifts/${shift_data._id}`, requestOptionsPatch)
                         .then(response => {
                             status_code = response.status;
                             // console.log(response);
@@ -156,7 +156,7 @@ const ShiftForm = (props) => {
                     };
         
                     let status_code;
-                    await fetch(`https://${get_ip(device_type)}/shifts`, requestOptionsPost)
+                    await fetch(`${get_ip(device_type)}/shifts`, requestOptionsPost)
                     .then(response => {
                         status_code = response.status;
                         // console.log(response);
@@ -198,7 +198,7 @@ const ShiftForm = (props) => {
             };
 
             let status_code;
-            await fetch(`https://${get_ip(device_type)}/shifts/delete/${shift_data._id}`, requestOptionsDelete)
+            await fetch(`${get_ip(device_type)}/shifts/delete/${shift_data._id}`, requestOptionsDelete)
             .then(response => {
                 status_code = response.status;
                 return response.json()
@@ -242,7 +242,7 @@ const ShiftForm = (props) => {
                 };
     
                 let status_code;
-                await fetch(`https://${get_ip(device_type)}/users/employees`, requestOptions)
+                await fetch(`${get_ip(device_type)}/users/employees`, requestOptions)
                 .then(response => {
                     status_code = response.status;
                     return response.json()

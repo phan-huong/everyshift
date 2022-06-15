@@ -16,8 +16,8 @@ const UserItem = props => {
                         <p className="userInfoName">{props.name}</p>
                         <div className="userPlace">
                             <p>{props.role}</p>
-                            <p><i className="fas fa-paint-brush" style={{color:`${props.color}`}}></i><span className="badge badge-pill" style={{background:`${props.color}`}}>
-                                &nbsp; &nbsp; &nbsp;</span>
+                            <p>
+                                <i className="fas fa-pencil-alt" style={{color:`${props.color}`}}></i>
                             </p>
                         </div>
                         

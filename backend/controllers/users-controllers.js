@@ -6,6 +6,24 @@ const jwt = require('jsonwebtoken');
 const HttpError = require('../models/http-error');
 const User = require('../models/user');
 
+// Function to determine user image by gender
+const generate_img_by_gender = (user_gender) => {
+    let output_img;
+    switch (user_gender) {
+        case 'male':
+            output_img = 'boy.png';
+            break;
+        case 'female':
+            output_img = 'girl.png';
+            break;
+        default:
+            output_img = 'person.png';
+            break;
+    }
+
+    return output_img;
+}
+
 // Get all users
 const getAllUsers = async (req, res, next) => {
     let users;
@@ -121,6 +139,8 @@ const updateUser = async (req, res, next) => {
         }
         edited_user.password = hashedPassword;
     }
+    
+    console.log(`===> New image: ${generate_img_by_gender(gender)}`);
 
     edited_user.firstName = firstName;
     edited_user.lastName = lastName;
@@ -136,6 +156,7 @@ const updateUser = async (req, res, next) => {
     edited_user.salary = salary;
     edited_user.entryDate = entryDate;
     edited_user.daysOffCount = daysOffCount || 0;
+    edited_user.image = `/icons/${generate_img_by_gender(gender)}`;
 
     try {
         await edited_user.save();
@@ -179,6 +200,19 @@ const signup = async (req, res, next) => {
         return next(error);
     }
 
+    // let img_by_gender = generate_img_by_gender(gender);
+    // switch (gender) {
+    //     case 'male':
+    //         img_by_gender = 'boy.png';
+    //         break;
+    //     case 'female':
+    //         img_by_gender = 'girl.png';
+    //         break;
+    //     default:
+    //         img_by_gender = 'person.png';
+    //         break;
+    // }
+
     const createdUser = new User({
         firstName, 
         lastName, 
@@ -190,7 +224,7 @@ const signup = async (req, res, next) => {
         streetHouseNr, postalCode, city, state, country, 
         salary, 
         entryDate,
-        image: 'https://image.flaticon.com/icons/png/512/860/860784.png',
+        image: `/icons/${generate_img_by_gender(gender)}`,
         password: hashedPassword,
         shifts: [],
         daysOffCount
