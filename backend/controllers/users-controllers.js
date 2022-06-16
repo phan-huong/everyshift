@@ -45,22 +45,22 @@ const getAllEmployees = async (req, res, next) => {
     if (manager_id && manager_id !== '') {
         try {
             manager = await User.findOne({ _id: manager_id, role: 'manager' });
+
+            let employees;
+            if (manager) {
+                try {
+                    employees = await User.find({ role: 'employee'}, '-password');
+                } catch (err) {
+                    const error = new HttpError('Fetching users failed!', 500);
+                    return next(error);
+                }
+                res.json({ users: employees.map(user => user.toObject({ getters: true })) });
+            } else {
+                res.json({ users: [] })
+            }
         } catch (err) {
             const error = new HttpError('Could not find manager!', 500);
             return next(error);
-        }
-
-        let employees;
-        if (manager) {
-            try {
-                employees = await User.find({ role: 'employee'}, '-password');
-            } catch (err) {
-                const error = new HttpError('Fetching users failed!', 500);
-                return next(error);
-            }
-            res.json({ users: employees.map(user => user.toObject({ getters: true })) });
-        } else {
-            res.json({ users: [] })
         }
     } else {
         res.json({ users: [] })
