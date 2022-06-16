@@ -159,6 +159,7 @@ const UserForm = (props) => {
                         if (status_code === 201) {
                             console.log(result);
                             alert('Created successfully!');
+                            window.location.href="/users/employees";
                         }
                     })
                     .catch(error => {
