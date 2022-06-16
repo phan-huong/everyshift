@@ -50,9 +50,8 @@ const SignIn = () => {
                 history.push("/");
             } else {
                 localStorage.removeItem('logged_in_token');
+                alert(result.message);
             }
-
-            console.log(result);
         })
         .catch(error => {
             console.log('error', error)
