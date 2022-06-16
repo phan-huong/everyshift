@@ -259,21 +259,42 @@ const UserForm = (props) => {
                         <div className="invalid-feedback">{errors.country?.message}</div>
                     </div>
                 </div>
-                <div className="field_2col">
+                <div className={`${ localUser.role !== 'manager' ? 'd-none' : 'field_2col' }`}>
                     <div>
                         <label>Salary</label>
-                        <input name="salary" type="number" min="1" {...register('salary')} className={`form-control ${errors.salary ? 'is-invalid' : ''}`} defaultValue={salary} />
+                        <input 
+                            name="salary" 
+                            type="number" 
+                            min="1" 
+                            {...register('salary')} 
+                            className={`form-control ${errors.salary ? 'is-invalid' : ''}`} 
+                            defaultValue={salary}
+                        />
                         <div className="invalid-feedback">{errors.salary?.message}</div>
                     </div>
                     <div>
                         <label>Days-off</label>
-                        <input name="daysOffCount" type="number" min={0} step={1} {...register('daysOffCount')} className={`form-control ${errors.daysOffCount ? 'is-invalid' : ''}`}  defaultValue={daysOffCount}/>
+                        <input 
+                            name="daysOffCount" 
+                            type="number" 
+                            min={0} 
+                            step={1} 
+                            {...register('daysOffCount')} 
+                            className={`form-control ${errors.daysOffCount ? 'is-invalid' : ''}`} 
+                            defaultValue={daysOffCount}
+                        />
                         <div className="invalid-feedback">{errors.daysOffCount?.message}</div>
                     </div>
                 </div>
-                <div>
+                <div className={`${ localUser.role !== 'manager' ? 'd-none' : 'field_2col' }`}>
                     <label>Entry date</label>
-                    <input name="entryDate" type="date" {...register('entryDate')} className={`form-control ${errors.entryDate ? 'is-invalid' : ''}`} defaultValue={entryDate} />
+                    <input 
+                        name="entryDate" 
+                        type="date" 
+                        {...register('entryDate')} 
+                        className={`form-control ${errors.entryDate ? 'is-invalid' : ''}`} 
+                        defaultValue={entryDate} 
+                    />
                     <div className="invalid-feedback">{errors.entryDate?.message}</div>
                 </div>
                 <div className={ localUser._id === user_data._id || isEmptyObject(user_data) ? '' : 'd-none' }>
