@@ -2,8 +2,8 @@ require("dotenv").config();
 
 const get_ip = (device_type) => {
     // let protocol = device_type === 'vps' ? 'https' : 'http';
-    let ip = process.env.IP || '127.0.0.1';
-    let port = process.env.BACKEND_PORT || 9000;
+    let ip = process.env.REACT_APP_IP || '127.0.0.1';
+    let port = process.env.REACT_APP_BACKEND_PORT || 9000;
     if (device_type === 'vps') {
         return `https://${ip}`;
     } else {
@@ -28,6 +28,6 @@ const get_ip = (device_type) => {
     // return ip;
 } ;
 
-const device_type = process.env.SERVER || 'pc';
+const device_type = process.env.REACT_APP_SERVER || 'pc';
 
 export { get_ip, device_type }
