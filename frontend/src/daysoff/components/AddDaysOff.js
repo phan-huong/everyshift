@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { get_ip, device_type } from '../../shared/components/localhost';
-import { isEmptyObject, get_local_user_token, get_local_user_data, check_if_manager } from '../../shared/functions/General';
+import { get_local_user_token } from '../../shared/functions/General';
 
 
 const AddDaysOff = (props) => {

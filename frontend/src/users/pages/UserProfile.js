@@ -4,15 +4,16 @@ import { useParams } from 'react-router-dom';
 import { get_ip, device_type } from '../../shared/components/localhost';
 
 import UserForm from '../components/UserForm';
+const USER_OBJ = { user_id: '' }
 
 const UserProfile = (props) => {
     const [userData, setUserData] = useState();
-    let user_id = useParams().id;
+    USER_OBJ.user_id = useParams().id;
 
     useEffect(() => {
         const fetch_user_profile = async () => {
             let token = localStorage.getItem("logged_in_token");
-            if (!userData && token && user_id !== 'create') {
+            if (token && USER_OBJ.user_id !== 'create') {
                 var myHeaders = new Headers();
                 myHeaders.append("Authorization", `Bearer ${token}`);
                 var requestOptions = {
@@ -22,7 +23,7 @@ const UserProfile = (props) => {
                 };
         
                 var status_code;
-                await fetch(`${get_ip(device_type)}/users/${user_id}`, requestOptions)
+                await fetch(`${get_ip(device_type)}/users/${USER_OBJ.user_id}`, requestOptions)
                 .then(response => {
                     status_code = response.status;
                     return response.json()

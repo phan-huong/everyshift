@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import QrReader from 'react-qr-reader';
-import { get_local_user_data, get_local_user_token } from '../../shared/functions/General';
+import { get_local_user_token } from '../../shared/functions/General';
 import { to_raw_date, to_raw_time, is_time_in_range, compare_date_standard } from '../../shared/functions/FormatDate';
 import { get_ip, device_type } from '../../shared/components/localhost';
 
 import './QRCodePage.css';
 
 const QRCodeScannerPage = () => {
-    const [qrCodeData, setrCodeData] = useState();
-    const userData = get_local_user_data();
+    // const [qrCodeData, setrCodeData] = useState();
+    // const userData = get_local_user_data();
 
     const update_shift_by_id = async (found_shift) => {
         if (found_shift.status === "done") {

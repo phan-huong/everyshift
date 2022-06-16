@@ -9,7 +9,7 @@ const About = () => {
 
                 <div className="main_content">
                     <div className="logo">
-                        <img className="icon" src={`${process.env.PUBLIC_URL}/icons/logos/180x180.png`} />
+                        <img className="icon" src={`${process.env.PUBLIC_URL}/icons/logos/180x180.png`} alt="Everyshift App" />
                         <span className="version text-secondary">Version 1.0</span>
                     </div>
                     

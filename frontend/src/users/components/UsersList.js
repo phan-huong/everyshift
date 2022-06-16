@@ -15,7 +15,7 @@ const UsersList = props => {
     return <ul className="usersList">
         {props.items.map(user => {
             let current_user_id = JSON.parse(localStorage.getItem("userData"))._id;
-            if (current_user_id !== user._id)
+            if (current_user_id !== user._id) {
                 return (
                     <UserItem 
                         key={user._id}
@@ -26,6 +26,9 @@ const UsersList = props => {
                         color={user.color_bkgr}
                     />
                 )
+            } else {
+                return null;
+            }
         })}
     </ul>
 };

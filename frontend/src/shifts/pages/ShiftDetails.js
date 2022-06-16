@@ -5,16 +5,17 @@ import { get_ip, device_type } from '../../shared/components/localhost';
 import { get_local_user_token } from '../../shared/functions/General';
 
 import ShiftForm from '../components/ShiftForm';
+const shift_obj = { shift_id: ''};
 
 const ShiftDetails = (props) => {
     const [shiftData, setShiftData] = useState();
-    let shift_id = useParams().id;
+    shift_obj.shift_id = useParams().id;
 
     useEffect(() => {
         const fetch_shift_details = async () => {
             let token = get_local_user_token();
             if (token) {
-                if (!shiftData && shift_id !== 'create') {
+                if (shift_obj.shift_id !== 'create') {
                     var myHeaders = new Headers();
                     myHeaders.append("Authorization", `Bearer ${token}`);
                     var requestOptions = {
@@ -24,7 +25,7 @@ const ShiftDetails = (props) => {
                     };
             
                     var status_code;
-                    await fetch(`${get_ip(device_type)}/shifts/shift/${shift_id}`, requestOptions)
+                    await fetch(`${get_ip(device_type)}/shifts/shift/${shift_obj.shift_id}`, requestOptions)
                     .then(response => {
                         status_code = response.status;
                         return response.json()

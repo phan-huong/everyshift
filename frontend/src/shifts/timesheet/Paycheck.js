@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import { get_local_user_data, sort_by_date, get_local_user_token } from '../../shared/functions/General';
+import { get_local_user_data, sort_by_date } from '../../shared/functions/General';
 import { to_standard_date, get_this_month, get_this_year, get_hour_as_number } from '../../shared/functions/FormatDate';
 import { get_ip, device_type } from '../../shared/components/localhost';
 import { useForm } from "react-hook-form";
@@ -9,11 +9,6 @@ import './Paycheck.css';
 
 const Paycheck = () => {
     const [shiftData, setShiftData] = useState([]);
-    const localUser = get_local_user_data();
-    const user_id = localUser.id;
-    const user_salary = localUser.salary;
-    // console.log(user_salary)
-
     const this_year = new Date().getFullYear().toString();
     const this_month = new Date().getMonth();
 
@@ -29,6 +24,8 @@ const Paycheck = () => {
             };
     
             var status_code;
+            const localUser = get_local_user_data();
+            let user_id = localUser.id;
             await fetch(`${get_ip(device_type)}/shifts/${user_id}`, requestOptions)
             .then(response => {
                 status_code = response.status;
@@ -46,19 +43,18 @@ const Paycheck = () => {
     }, [])
 
     const { register } = useForm();
-
     const [month, setMonth] = useState(`${this_month}`);
-
     const handleChange = (e) => {
         setMonth(e.target.value);
     }
-
     let month_salary = 0;
 
     const display_shifts = () => {
         const sorted_shift_data = sort_by_date(shiftData);
         let sorted_shift_done = [];
         let display_elements = [];
+        const localUser = get_local_user_data();
+        let user_salary = localUser.salary;
         
         for (const sorted_shift of sorted_shift_data) {
             let shift_month = get_this_month(sorted_shift.date);

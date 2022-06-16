@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, useHistory, Link } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';

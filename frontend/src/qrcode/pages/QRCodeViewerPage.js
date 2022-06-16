@@ -23,7 +23,7 @@ const QRCodeViewerPage = () => {
             }
         }
         get_qr_code();
-    }, [])
+    })
 
     return (
         <div className="qrcode_page">
@@ -32,7 +32,7 @@ const QRCodeViewerPage = () => {
                 
                 <div className="main_content">
                     {
-                        qrCodeURL ? <img className="border p-2" src={qrCodeURL} /> : <div className="spinner-border text-primary"></div>
+                        qrCodeURL ? <img className="border p-2" src={qrCodeURL} alt="The QR-Code" /> : <div className="spinner-border text-primary"></div>
                     }
                 </div>
                 

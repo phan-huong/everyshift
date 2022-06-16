@@ -7,7 +7,7 @@ import NavIcon from '../UIElements/NavIcon';
 const SideDrawer = (props) => {
     let history = useHistory();
     const sideDrawerOpenClass = "drawerOpen";
-    const rotateClass = "navbar_rotate";
+    // const rotateClass = "navbar_rotate";
     const [userID, setUserID] = useState();
     const [userRole, setUserRole] = useState("employee");
 

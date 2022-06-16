@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
-import { get_local_user_data } from '../../functions/General';
+// import { get_local_user_data } from '../../functions/General';
 
 import MainFooter from './MainFooter';
 import './NavBar.css';
 
 const NavFooter = props => {
-    const localUser = get_local_user_data();
+    // const localUser = get_local_user_data();
     return (
         <MainFooter>      
             <OverlayTrigger placement='top' overlay={ <Tooltip id='tooltip-top'><strong>Home</strong></Tooltip> }>

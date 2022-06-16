@@ -11,8 +11,6 @@ import './Wishlist.css';
 
 const Wishlist = () => {
     const [shiftData, setShiftData] = useState([]);
-    const localUser = get_local_user_data();
-    const user_id = localUser._id;
 
     useEffect(() => {
         const fetch_shifts = async () => {
@@ -26,6 +24,8 @@ const Wishlist = () => {
             };
     
             var status_code;
+            const localUser = get_local_user_data();
+            let user_id = localUser._id;
             await fetch(`${get_ip(device_type)}/shifts/${user_id}`, requestOptions)
             .then(response => {
                 status_code = response.status;

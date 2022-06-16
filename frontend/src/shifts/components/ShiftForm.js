@@ -232,7 +232,8 @@ const ShiftForm = (props) => {
             let token = get_local_user_token();
             if (token) {
                 let myHeaders = new Headers();
-                myHeaders.append("manager_id", localUser._id ? localUser._id : '');
+                let userData = get_local_user_data();
+                myHeaders.append("manager_id", userData._id ? userData._id : '');
                 myHeaders.append("Authorization", `Bearer ${token}`);
 
                 let requestOptions = {
@@ -250,7 +251,7 @@ const ShiftForm = (props) => {
                 .then(result => {
                     if (status_code === 200) {
                         let all_employees = result.users;
-                        all_employees.unshift(localUser);
+                        all_employees.unshift(userData);
                         setEmployeeList(all_employees);
                     }
                 })

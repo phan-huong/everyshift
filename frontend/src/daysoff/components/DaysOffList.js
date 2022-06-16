@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { get_ip, device_type } from "../../shared/components/localhost";
 import { sort_by_date_from_db, get_local_user_token } from '../../shared/functions/General';
 import { to_standard_date, get_this_year_only, to_raw_date } from "../../shared/functions/FormatDate";
@@ -12,7 +12,7 @@ const DaysOffList = (props) => {
 
         function get_years(dates_list) {
             let years = [];
-            let tempo_year = 0;
+            // let tempo_year = 0;
             for (const date_str of dates_list) {
                 let new_date = new Date(date_str);
                 let new_year = new_date.getFullYear();
