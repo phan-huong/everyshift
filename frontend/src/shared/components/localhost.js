@@ -1,10 +1,14 @@
 require("dotenv").config();
 
 const get_ip = (device_type) => {
-    let protocol = device_type === 'vps' ? 'https' : 'http';
+    // let protocol = device_type === 'vps' ? 'https' : 'http';
     let ip = process.env.IP || '127.0.0.1';
     let port = process.env.BACKEND_PORT || 9000;
-    return `${protocol}://${ip}:${port}`;
+    if (device_type === 'vps') {
+        return `https://${ip}`;
+    } else {
+        return `http://${ip}:${port}`;
+    }
 
     // let ip;
     // switch (device_type) {
