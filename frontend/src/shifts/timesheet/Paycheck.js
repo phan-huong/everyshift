@@ -10,7 +10,7 @@ import './Paycheck.css';
 const Paycheck = () => {
     const [shiftData, setShiftData] = useState([]);
     const localUser = get_local_user_data();
-    const user_id = localUser._id;
+    const user_id = localUser.id;
     const user_salary = localUser.salary;
     // console.log(user_salary)
 
@@ -95,18 +95,18 @@ const Paycheck = () => {
             <form className="sort_by">
                 <label>Month:</label>
                 <select name="month" {...register('month')} defaultValue={`${this_month}`} onChange={handleChange}>
-                    <option value="1">Jan</option>
-                    <option value="2">Feb</option>
-                    <option value="3">Mar</option>
-                    <option value="4">Apr</option>
-                    <option value="5">May</option>
-                    <option value="6">Jun</option>
-                    <option value="7">Jul</option>
-                    <option value="8">Aug</option>
-                    <option value="9">Sep</option>
-                    <option value="10">Oct</option>
-                    <option value="11">Nov</option>
-                    <option value="12">Dec</option>
+                    <option value="0">Jan</option>
+                    <option value="1">Feb</option>
+                    <option value="2">Mar</option>
+                    <option value="3">Apr</option>
+                    <option value="4">May</option>
+                    <option value="5">Jun</option>
+                    <option value="6">Jul</option>
+                    <option value="7">Aug</option>
+                    <option value="8">Sep</option>
+                    <option value="9">Oct</option>
+                    <option value="10">Nov</option>
+                    <option value="11">Dec</option>
                 </select>
             </form>
         </div>

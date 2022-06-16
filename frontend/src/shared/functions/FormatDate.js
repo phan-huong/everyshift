@@ -43,7 +43,7 @@ function get_this_month(date_in) {
     let date_out = '';
     if (date_in) {
         let new_date = new Date(date_in);
-        let new_month = new_date.getMonth() + 1;
+        let new_month = new_date.getMonth();
         date_out = `${new_month}`;
     }
     return date_out;
