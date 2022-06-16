@@ -56,14 +56,14 @@ const getAllEmployees = async (req, res, next) => {
                 }
                 res.json({ users: employees.map(user => user.toObject({ getters: true })) });
             } else {
-                res.json({ users: [] })
+                res.json({ users: [], error: 'User is not a manager' })
             }
         } catch (err) {
             const error = new HttpError('Could not find manager!', 500);
             return next(error);
         }
     } else {
-        res.json({ users: [] })
+        res.json({ users: [], error: 'No manager_id' })
     }
     
 };
